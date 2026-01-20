@@ -1,0 +1,208 @@
+syntax = 'proto3';
+
+package lexmodo.v1.template;
+
+option go_package = "bitbucket.org/lexmodo/proto/template";
+
+import "google/protobuf/wrappers.proto";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "template_settings.proto";
+import "template_preview.proto";
+import "template_builder.proto";
+service Templates{
+
+
+    rpc SetTemplateSetting(TemplateSettings) returns (ResultResponse) {}
+    rpc GetTemplateSetting(TemplateSettings) returns (ResultResponse) {}
+
+    rpc GetFileHistory(Template) returns (ResultResponse) {}
+
+    rpc ActivateTemplate(Template) returns (ResultResponse) {}
+
+    rpc DeleteTemplate (Template) returns (ResultResponse)  {}
+     
+    rpc GetTemplates(google.protobuf.Empty)  returns (ResultResponse)  {}
+
+    rpc CreateTemplate(Template) returns (ResultResponse) {}
+
+    rpc GetTemplateFiles(Template) returns (ResultResponse){
+    
+        option (google.api.http) = {
+            get: "/template/{template_name}"
+        };    
+
+    }
+
+    rpc DeleteNode(Template) returns (ResultResponse) {}
+
+    rpc FetchFile (Template) returns (stream ResultResponse) {}
+
+
+    rpc PreviewSchema (PreviewRequest) returns ( ResultResponse) {}
+
+    rpc Preview(stream PreviewRequest) returns (stream ResultResponse) {}
+
+    rpc ExportTemplate(ExportTemplateRequest) returns ( ResultResponse) {}
+
+    rpc UploadFile(stream Template) returns (ResultResponse){} 
+
+    rpc RequestThemeBuilderToken(Template) returns (ResultResponse){} 
+}
+
+enum FILE_TYPE{
+        undefined =0;
+        html = 1;
+        js=2;
+        image =3;
+        general=4;
+        eot = 5;
+        svg =6;
+        json =7;
+        ico =8;
+        scss = 9;
+        otf = 10;
+        ttf = 11;
+        woff = 12;
+        woff2 = 13;
+
+}
+
+
+message TemplateSettings{
+
+    string template_name =1;
+    lexmodo.v1.template_settings.EditorConfig template_settings=2;
+
+}
+
+message TemplateSettingValue{
+
+    string key =1;
+    string value = 2;
+    bool delete_key = 3;
+
+}
+
+message PreviewRequest{
+    enum PREVIEW_TYPE{
+        undefined = 0;
+        account_index = 1;
+        account_login = 2;
+        account_create =3;
+        account_create_address =4;
+        account_edit_address =5;
+        account_order_details =6;
+        account_orders  = 7;
+        account_reset_password = 8;
+        account_reset_password_token = 9;
+        account_save_payment = 10;
+
+        mail_admin_update = 11;
+        mail_contact_us =12;
+        mail_order_confirmation =13;
+        mail_order_update = 14;
+        mail_password_reset = 15;
+        mail_welcome_email = 16;
+        order_success = 17;
+
+        route_home_page = 18;
+        route_product = 19;
+        route_product_listing = 20;
+        route_pages = 21;
+        route_blogs = 22;
+        route_posts = 23;
+    }
+
+    PREVIEW_TYPE preview_type =1;
+    Template template =2;
+    lexmodo.v1.template_preview.PreviewRequest preview_data = 3;
+    lexmodo.v1.template_builder.TemplateSchema template_schema = 4;
+    google.protobuf.StringValue preview_version_id = 5;
+    lexmodo.v1.template_builder.GlobalSettings global_settings = 6;
+}
+
+
+
+message Template{
+
+    string template_name =1;
+    string template_img_src =2;
+    bool is_active =3;  
+    ///bytes path_tree = 4;
+    uint64 created_date =4;
+    
+    Node node =5;
+
+    bool disable_minify =6;
+
+    repeated TemplateSettingValue template_settings = 7;
+
+}
+
+message ResultResponse{
+
+	bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    repeated Template templates = 5;
+
+    Template template = 6;
+
+    repeated FileInfo file_history = 7;   
+    TemplateSettings template_settings= 8;
+
+    google.protobuf.StringValue theme_builder_token = 9;
+    google.protobuf.StringValue preview_version_id = 10;
+
+}
+
+enum CORE_FILE{
+    invalid = 0;
+    index =1;
+    login =2;
+    create_account=3;
+    forgot_password=4;
+}
+
+message FileData {
+    
+    bytes Content = 1;
+
+    FILE_TYPE file_type =2;
+
+    CORE_FILE core_file =3;
+
+    lexmodo.v1.template_builder.TemplateSchema template_schema =4;
+    lexmodo.v1.template_builder.GlobalSettings global_settings =5;
+}
+
+message FileInfo{
+    
+    string name =1;
+    uint64 size  =2;
+    uint64 modification_time =3;
+    bool is_dir = 4;
+    bool is_core =5;
+    FileData file =6;
+    bool skip_compile = 7;
+    string file_hash = 8;
+    bool save_error =9;
+    bool request_proxy = 10;
+
+}
+
+message Node{
+    string path =1;
+    FileInfo info =2;
+    repeated Node children =3;
+    //Node Parent =4;
+    
+}
+
+message ExportTemplateRequest{
+    Template template =1;
+    string send_copy_to = 2;
+}

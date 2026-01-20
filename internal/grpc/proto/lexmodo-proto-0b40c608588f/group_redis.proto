@@ -1,0 +1,47 @@
+syntax = 'proto3';
+
+package lexmodo.v1.group_redis;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/group_redis";
+
+import "users.proto";
+
+
+message GroupChannel{
+
+    uint64 client_id =1;
+
+
+	enum ACTION_TYPE{
+		
+	    unknown = 0;
+	    create = 1;
+		delete =2;
+		update =3;
+		member_add =4;
+		member_delete =5;
+		get =6;
+		member_groups =7;
+		get_all = 8;
+	}
+
+	ACTION_TYPE action_type =2;
+
+	
+	bool success =3;
+
+	string error_message =4;
+
+	string reply_uuid =5;
+
+	lexmodo.v1.accounts.Group group = 6;
+	
+}
+
+
+message ResultResponse{
+	bool success =1;
+	string error_message = 2;
+	repeated lexmodo.v1.accounts.Group groups = 3;
+}

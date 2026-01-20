@@ -1,0 +1,39 @@
+syntax = 'proto3';
+
+package lexmodo.v1.plguins_redis;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/plguins_redis";
+
+enum PLUGINTYPE {
+    UNKNOWN_PLUGIN = 0;
+    SHIPPING =1;
+    CUSTOM =2;
+}
+
+enum ACTION_TYPE{
+		
+	unknown = 0;
+	update = 1;
+	delete =2;
+	new =3;
+	generate_token = 4;
+}
+
+message PluginChannel{
+
+    uint64 client_id =1;
+
+	ACTION_TYPE action_type =2;
+
+	PLUGINTYPE plugin_type =3;
+
+
+    string plugin_code  =4;
+
+	string identifier_id =5;
+	string admin_name =6;
+	bool is_admin = 7;
+	string response_channel_id = 8;
+	string session_token = 9;
+}

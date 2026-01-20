@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package lexmodo.v1.template_settings;
+
+option go_package = "bitbucket.org/lexmodo/proto/template_settings";
+
+import "google/protobuf/wrappers.proto";
+
+message Headeroptions {
+    google.protobuf.StringValue logo_alignment = 1;
+    google.protobuf.StringValue logo_image = 2;
+    google.protobuf.StringValue logo_width = 3;
+    google.protobuf.StringValue site_name = 4;
+    google.protobuf.StringValue phone_number = 5;
+    google.protobuf.StringValue menu = 6;
+    google.protobuf.BoolValue show_announcement = 7;
+    google.protobuf.StringValue announcement_text = 8;
+    google.protobuf.StringValue announcement_link = 9;
+    google.protobuf.StringValue announcement_color = 10;
+    google.protobuf.StringValue announcement_text_color = 11;
+    google.protobuf.StringValue header_background_color = 12;
+}
+
+message Footeroptions {
+    google.protobuf.StringValue primary_menu = 1;
+    google.protobuf.StringValue additional_menu = 2;
+    google.protobuf.BoolValue show_newsletter_sign_up = 3;
+    google.protobuf.StringValue mailchimp_url = 4;
+    google.protobuf.BoolValue show_payment_icons = 5;
+}
+
+message Textandbuttons {
+    google.protobuf.StringValue headings_text = 1;
+    google.protobuf.StringValue body_text = 2;
+    google.protobuf.StringValue sale_text = 3;
+    google.protobuf.StringValue borders = 4;
+    google.protobuf.StringValue buttons = 5;
+    google.protobuf.StringValue button_text = 6;
+    google.protobuf.StringValue small_buttons = 7;
+    google.protobuf.StringValue small_button_text = 8;
+    google.protobuf.StringValue text_fields = 9;
+    google.protobuf.StringValue text_field_text = 10;
+}
+
+message Imageoverlays {
+    google.protobuf.StringValue text = 1;
+    google.protobuf.StringValue background = 2;
+    uint64 opacity = 3;
+}
+
+message Colors {
+    Textandbuttons text_and_buttons = 1;
+    Imageoverlays image_overlays = 2;
+    google.protobuf.StringValue background_color = 3;
+}
+
+message Headingsandbuttons {
+    google.protobuf.StringValue font = 1;
+    google.protobuf.StringValue base_size = 2;
+}
+
+message Bodytext {
+    google.protobuf.StringValue font = 1;
+    google.protobuf.StringValue base_size = 2;
+}
+
+message Typography {
+    Headingsandbuttons headings_and_buttons = 1;
+    Bodytext body_text = 2;
+}
+
+message Socialmedia {
+    google.protobuf.BoolValue share_on_facebook = 1;
+    google.protobuf.StringValue twitter = 2;
+    google.protobuf.StringValue facebook = 3;
+    google.protobuf.StringValue instagram = 4;
+    google.protobuf.StringValue linkedin = 5;
+}
+
+message Favicon {
+    google.protobuf.StringValue image = 1;
+}
+
+message Newsletter {
+    google.protobuf.BoolValue show_newsletter_sign_up = 1;
+    google.protobuf.StringValue mailchimp_url = 2;
+}
+
+message Checkout {
+    google.protobuf.StringValue banner_image = 1;
+    google.protobuf.StringValue logo_image = 2;
+    google.protobuf.StringValue logo_position = 3;
+    google.protobuf.StringValue logo_size = 4;
+    google.protobuf.StringValue main_content_background_image = 5;
+    google.protobuf.StringValue main_content_background_color = 6;
+    google.protobuf.StringValue form_field_backgrounds = 7;
+    google.protobuf.StringValue order_summary_background_image = 8;
+    google.protobuf.StringValue order_summary_background_color = 9;
+    google.protobuf.StringValue accents_color = 10;
+    google.protobuf.StringValue buttons_color = 11;
+    google.protobuf.StringValue errors_color = 12;
+    google.protobuf.BoolValue   opc_status = 13;
+    map<string,string>          custom_config = 14;
+}
+
+message ProductListing{
+    google.protobuf.Int32Value display_result =1;
+    CustomSearch custom_search =2;
+}
+
+message ContactUs{
+    google.protobuf.StringValue contact_us_email =1;
+}
+
+message Robots{
+    google.protobuf.StringValue txt =1;
+}
+
+message Analytics{
+    repeated AnalyticsData analytics_data = 1;
+}
+
+message Themeoptions {
+    Colors colors = 1;
+    Typography typography = 2;
+    Socialmedia social_media = 3;
+    Favicon favicon = 4;
+    Newsletter newsletter = 5;
+    Checkout checkout = 6;
+    ProductListing products_listing =7;
+    ContactUs contact_us =8;
+    Robots robots =9;
+    Banners banner =10;
+    Analytics analytics = 11;
+}
+
+message Banners {
+    map<string,string>  home = 1;
+    map<string,string>  category =2;
+    map<string,string>  product =3;
+}
+
+message SpamProtection{
+    enum SERVICE_TYPE{
+        unknown = 0;
+        google = 1;
+    }
+    SERVICE_TYPE service_type = 2;
+    string form_key =3;
+    string secret_key =4;
+    repeated string urls =5;
+}
+message RuleSortBy {
+
+    string column_name =1;
+    enum SORT{
+        asc =0;
+        desc=1;
+    }
+    SORT sort_order =2;
+}
+
+message CustomSearch{
+    string rule_query = 1;
+    repeated RuleSortBy sort_by = 2;
+}
+
+message AnalyticsData{
+    enum ANALYTICS_TYPE{
+        UNKNOWN = 0;
+        CUSTOM = 1;
+        GOOGLE = 2;
+    }
+    ANALYTICS_TYPE analytics_type = 1;
+    enum ANALYTICS_PAGE_TYPE{
+        UNKNOWN_PAGES = 0;
+        HP = 1;
+        Product = 2;
+        Category = 3;
+        Cart = 4;
+        Order = 5;
+        Order_Complete = 6;
+    }
+    ANALYTICS_PAGE_TYPE analytics_page = 2;
+    bool disable_analytics = 3;
+    google.protobuf.StringValue template_custom_code = 4;
+    google.protobuf.StringValue file_code = 5;
+    google.protobuf.StringValue header_code = 6;
+    google.protobuf.StringValue body_code = 7;
+    google.protobuf.StringValue analytics_data_name = 8;
+
+}
+
+message EditorConfig {
+    Headeroptions header_options = 1;
+    Footeroptions footer_options = 2;
+    Themeoptions theme_options = 3;
+    SpamProtection spam_protection =4;
+
+}

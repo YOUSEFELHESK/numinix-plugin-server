@@ -1,0 +1,337 @@
+syntax = 'proto3';
+
+package lexmodo.v1.coupons;
+
+option go_package = "bitbucket.org/lexmodo/proto/coupons";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "order_modules.proto";
+import "orders.proto";
+
+
+service Coupons{
+
+  rpc CouponSearch(CouponRuleRequest) returns (ResultResponse) {}
+  rpc GetCoupon(CouponRequest) returns (ResultResponse) {}
+  rpc GenerateCoupon(CouponRequest) returns (ResultResponse) {}
+  rpc UpdateCoupon(CouponRequest) returns (ResultResponse) {}
+  rpc DeleteCoupon(CouponRequest) returns (ResultResponse) {}
+  rpc ApplyOrderModule(ApplyOrderModuleRequest) returns (ResultResponse) {}
+  rpc ProcessModule(ApplyOrderModuleRequest) returns (ResultResponse) {}
+  rpc CreateCouponRule(CouponRuleRequest) returns (ResultResponse) { }
+  rpc DeleteCouponRule(CouponRuleRequest) returns (ResultResponse) {}
+  rpc GetCouponListing(CouponListing) returns (ResultResponse) {}
+  rpc GetCouponRule(google.protobuf.Empty) returns (ResultResponse) {}
+
+}
+
+
+
+message CouponListing{
+
+    string assoicated_rule_id = 1;
+    uint32 page_num = 2;
+    uint32 total_result = 3;
+    uint32 display_result = 4;
+    repeated CouponRequest coupon_listing = 5;
+    string rule_id = 6;
+    string rule_query = 7;
+    repeated RuleSortBy sort_by =8;
+    string pit =9;
+}
+
+
+message RuleSortBy {
+
+    string column_name =1;
+    enum SORT{
+        asc =0;
+        desc=1;
+    }
+    SORT sort_order =2;
+}
+
+message CouponRuleRequest{
+
+    string rule_id = 1;
+    string rule_name = 2;
+    string coupon_id = 3;
+    string rule_query = 4;
+    repeated RuleSortBy sort_by =5;
+    bool store_view = 6;
+    repeated RuleReplace sort_coupons = 7;
+    uint64 sort_order =8;
+    string search_query =9;
+    uint32 page_num =10;
+} 
+
+
+message RuleReplace{
+
+    string coupon_id = 1;
+    uint32 before_coupon_id = 2;
+
+}
+
+message ResultResponse{
+
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    CouponRequest coupon = 5;
+    lexmodo.v1.order.modules.OrderTotal applied_order_module = 6;
+    CouponRuleRequest rule = 7;
+    CouponListing coupon_listing =8;
+    repeated CouponRuleRequest rules = 9;
+    
+
+}
+
+message Performance{
+
+    uint64 number_of_uses =1;
+    uint64 last_time_used =2;
+}
+
+message ProductVariant{
+    string product_id = 1;
+    string variant_id = 2;
+}
+
+enum APPLY_TYPE{
+
+        entire_order = 0;
+        specific_categories = 1;
+        specific_products = 2;
+        specific_products_rule =3;
+}
+
+message CouponAmountOff{
+
+    oneof amount{
+
+        google.protobuf.StringValue percentage =1;
+
+        google.protobuf.Int32Value dollar =2;
+    }
+
+
+    APPLY_TYPE apply_type_setting = 3;
+
+    oneof apply_to{
+
+
+        apply_type_ids apply_type_ids = 4;
+
+        apply_to_products apply_to_products = 5;
+
+
+    }
+
+    google.protobuf.BoolValue apply_discount_per_eligible_item = 6;
+
+
+    oneof minimum{
+
+        google.protobuf.FloatValue quantity_items = 7;
+
+        google.protobuf.Int32Value  amount_dollar = 8;
+    }
+}
+
+message CountryController{
+
+    string country_name = 1;
+    
+    enum COUNTRY_STATUS{
+        default =0;
+        deny_all =1;
+        allow_all =2;
+    }
+
+    enum STATE_STATUS{
+
+        excluded_zones = 0;
+        included_zone = 1;
+    }
+
+    map<string, STATE_STATUS> state = 2;
+
+    COUNTRY_STATUS country_status =3;
+
+}
+
+message CouponFreeShipping{
+
+	bool all_countries = 1;
+	
+	repeated CountryController zones = 2; //If country is the key then the whole country will be selected
+
+	google.protobuf.Int32Value   exclude_shipping_rates_over_amount_dollar = 3;
+
+
+    oneof minimum{
+
+        google.protobuf.FloatValue quantity_items = 4;
+
+        google.protobuf.Int32Value  amount_dollar = 5;
+    }
+
+}
+
+
+message apply_type_ids{
+    repeated string ids =1;
+}
+
+message apply_to_products{
+    repeated  ProductVariant apply_to_products = 1;
+}
+
+message CustomerBuys {
+
+	APPLY_TYPE apply_type_setting  = 1;
+
+
+    oneof apply_to{
+
+        string id = 2;
+
+        ProductVariant apply_to_products = 3;
+
+
+        string product_rule_query = 4;
+
+    }
+
+    oneof minimum{
+
+        google.protobuf.FloatValue quantity_items = 5;
+
+        google.protobuf.Int32Value  amount_dollar = 6;
+    }
+
+
+
+
+}
+
+
+message CustomerGets {
+
+	APPLY_TYPE apply_type_setting  = 1;
+
+    oneof apply_to{
+
+
+	    string id = 2;
+
+        ProductVariant apply_to_products = 3;
+
+        string product_rule_query = 4;
+
+    }
+
+
+    oneof reward {
+
+        google.protobuf.StringValue at_a_discount_amount_percentage =5;
+
+        google.protobuf.BoolValue  item_free = 6 ;
+
+    }
+	
+
+	google.protobuf.Int32Value  maximum_number_uses_per_order = 7;
+
+    double  quantity_items = 8;
+
+}
+
+message BuyXGetY{
+
+	CustomerBuys customer_buys =1;
+
+	CustomerGets customer_gets = 2;
+}
+
+
+message CustomerEligibility{
+
+	enum ELIGIBILITY_TYPE{
+
+        everyone = 0;
+        specific_rules= 1;
+        specific_customers = 2;
+    }
+
+    ELIGIBILITY_TYPE eligibility_type = 1;
+
+    repeated string apply_eligibility_ids = 2;
+}
+
+message UsageLimits{
+
+	google.protobuf.Int32Value  total_usage_limit = 1;
+
+	bool limit_once_per_customer = 2;
+
+    bool apply_only_this = 3; 
+}
+ 
+message ApplyOrderModuleRequest{
+
+    lexmodo.v1.orders.Invoice invoice =1;
+    string coupon_code =2; 
+
+}
+
+message CouponRequest{
+
+
+	string coupon_code =1;
+
+	 enum COUPON_TYPE{
+
+        percentage = 0;
+        fixed_amount = 1;
+        free_shipping = 2;
+ 		buy_x_get_y =3;
+    }
+
+    COUPON_TYPE coupon_type = 2;
+
+    oneof coupon_discount{
+
+
+        CouponAmountOff coupon_amount_off = 3;
+        CouponFreeShipping coupon_free_shipping =4;
+        BuyXGetY   coupon_buy_x_get_y = 5;
+    }
+
+    UsageLimits coupon_usage_limit =6;
+    google.protobuf.Int32Value active_date = 7;
+    google.protobuf.Int32Value end_date = 8;
+    uint64 created_on = 9;
+    uint64 updated_on = 10;
+
+    enum COUPON_STATUS{
+        active = 0;
+        scheduled =1 ;
+        expired =3;
+    }
+
+    COUPON_STATUS coupon_status = 11;
+    CustomerEligibility customer_eligibility = 12;
+
+    Performance performance =13;
+
+    bool automatically_apply =14;
+
+    uint32 precedence = 15;
+
+    repeated string dont_combine_with_certian_shippings = 16;
+    google.protobuf.Int32Value dont_apply_if_shipping_cost_less_than = 17;
+}

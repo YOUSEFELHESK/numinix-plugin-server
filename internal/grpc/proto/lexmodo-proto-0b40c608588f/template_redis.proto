@@ -1,0 +1,56 @@
+syntax = 'proto3';
+
+package lexmodo.v1.template_redis;
+
+import "template.proto";
+import "google/protobuf/wrappers.proto";
+option go_package = "bitbucket.org/lexmodo/proto/template_redis";
+
+
+
+message TemplateChannel{
+
+    uint64 client_id =1;
+
+	
+	string template_path =2;
+
+	
+	string store_url =3;
+
+	string message_id =6;
+
+	enum ACTION_TYPE{
+        undefined = 0;
+        activate = 1;
+        file_change = 2;
+		file_deleted = 3;
+    }
+	
+	ACTION_TYPE action =7;
+
+	lexmodo.v1.template.Node node = 8; 
+}
+
+
+message TemplatePreview{
+
+    uint64 client_id =1;
+
+	string store_url =2;
+
+	string message_id =3;
+
+	string replay_uuid = 4;
+	lexmodo.v1.template.PreviewRequest preview_request =5;   
+
+	string template_id =6; 
+}
+
+
+message TemplatePreviewResponse{
+	string response_path =1;
+	string error_message=2;
+
+
+}

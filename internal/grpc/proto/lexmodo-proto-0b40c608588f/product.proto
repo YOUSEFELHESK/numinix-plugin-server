@@ -1,0 +1,1197 @@
+syntax = 'proto3';
+
+package lexmodo.v1.products;
+
+option go_package = "bitbucket.org/lexmodo/proto/products";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+import "money.proto";
+import "customers.proto";
+
+service Products {
+
+
+    rpc ProductSearch(ProductSearchRequest) returns(ResultResponse){
+           
+    }
+
+    rpc ProductsExist(ProductIDByVariantRequest) returns(ResultResponse){
+             
+    }
+
+    rpc ProductSearchableVariables(ProductSearchRequest) returns(ResultResponse){
+            
+    }
+
+
+    rpc ConfrimProductRuleExists(ProductRuleRequest) returns (ResultResponse) {
+        
+    }
+
+    rpc CreateProductRule(ProductRuleRequest) returns (ResultResponse) {
+       
+    }
+
+    rpc DeleteProductRule(ProductRuleRequest) returns (ResultResponse) {
+     
+    }
+
+    rpc GetProductRule(ProductEmptyRequest) returns(ResultResponse){
+            
+    }
+
+    rpc InternalUpdateProductModification(ProductInfoRequest) returns (ResultResponse) {
+      option (google.api.http) = {
+            get: "/update-product-mod-time/{product_id}"
+        };
+    }
+
+    rpc GetChildProductVariants(ProductInfoRequest) returns (ResultResponse) {
+      option (google.api.http) = {
+            get: "/GetChildProductVariants/{product_id}"
+        };
+    }
+
+    rpc GetProductByID(ProductInfoRequest) returns (ResultResponse) {
+
+      
+    }
+
+
+    rpc GetLastProductUpdate(ProductInfoRequest) returns (ResultResponse) {
+
+      
+    }
+
+    rpc GetProductByIDWithVariantArray(ProductIDByVariantRequest) returns (ResultResponse) {
+  
+    } 
+
+    rpc GetProductListingByID(ProductListingInfo) returns (ResultResponse) {
+
+    }
+
+
+    rpc GetProductListingBySeo(ProductListingInfo) returns (ResultResponse) {
+   
+    }
+    rpc CreateProduct(ProductCreateRequest) returns (ResultResponse) {
+      
+    }
+
+    rpc CreateVariants(VariantsArray) returns (ResultResponse) {
+
+    }
+
+    rpc ResetProductMetrics(ProductInfoRequest) returns (ResultResponse) {
+      
+    } 
+
+
+    rpc DeleteProduct(ProductInfoRequest) returns (ResultResponse) {
+      
+    }
+
+    rpc GetDeletedProductInfo(ProductInfoUpdateInt) returns (ResultResponse) {
+        
+    }
+    rpc DeleteAllVariant(ProductVariant) returns (ResultResponse) {
+     
+    }    
+
+    rpc DeleteVariant(ProductVariant) returns (ResultResponse) {
+      
+    }
+    rpc SetProductTaxed(ProductInfoUpdateBool) returns (ResultResponse) {
+      
+    } 
+
+
+    rpc SetProductTags(ProductInfoTag) returns (ResultResponse) {
+       
+    }
+    
+    rpc SetProductTagsAppend(ProductInfoTag) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductTagsDelete(ProductInfoTag) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductName(ProductInfoUpdateString) returns (ResultResponse) {
+        
+    } 
+
+
+    rpc DeleteProductVariantsOptions(ProductVariantUpdateBool) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductDateAvailable(ProductInfoUpdateInt) returns (ResultResponse) {
+       
+    }
+
+
+    rpc ProductSEOExists(ProductInfoSeoTitle) returns (ResultResponse) {
+       
+    }
+    
+    rpc SetProductModel(ProductInfoUpdateString) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductDescription(ProductInfoUpdateString) returns (ResultResponse) {
+        
+    }   
+
+    rpc SetProductImagesOrder(ProductInfoUpdateArrayString) returns (ResultResponse) {
+
+        
+    }
+
+    rpc SetProductVirtual(ProductInfoUpdateBool) returns (ResultResponse) {
+        
+    } 
+
+    rpc SetProductAllowRecurring(ProductInfoUpdateBool) returns (ResultResponse) {
+       
+    }     
+    rpc GetRelatedProducts(ProductInfoRequest) returns (ResultResponse) {
+            }
+
+    rpc SetRelatedProducts(ProductRelated) returns (ResultResponse) {
+      
+    } 
+
+    rpc SetProductStatus(ProductInfoUpdateBool) returns (ResultResponse) {
+      
+    }   
+
+    rpc SetProductWeight(ProductInfoUpdateWeight) returns (ResultResponse) {
+      
+    }   
+
+    rpc SetProductImageAltText(ProductAtlTextUpdate) returns (ResultResponse) {
+           }   
+
+    rpc SetProductDIM(ProductInfoUpdateDIM) returns (ResultResponse) {
+      
+    }  
+
+
+    rpc SetProductReviews(ProductReviews) returns (ResultResponse) {
+      
+    } 
+
+    rpc SetProductOrderMin(ProductInfoUpdateDouble) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductOrderMax(ProductInfoUpdateDouble) returns (ResultResponse) {
+        }
+
+    rpc SetProductOrderUnits(ProductInfoUpdateDouble) returns (ResultResponse) {
+      
+    }
+
+    rpc SetProductSeoTitle(ProductInfoUpdateString) returns (ResultResponse) {
+        
+    }
+
+    rpc SetProductSeoUrl(ProductInfoUpdateString) returns (ResultResponse) {
+      
+    }
+
+    rpc SetProductBrand(ProductInfoUpdateString) returns (ResultResponse) {
+       
+    }
+
+
+    rpc SetProductVendor(ProductInfoUpdateString) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductChannels(ProductInfoChannels) returns (ResultResponse) {
+      
+    }
+
+
+    rpc SetProductType(ProductInfoUpdateString) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductSeoDescription(ProductInfoUpdateString) returns (ResultResponse) {
+       
+    }   
+
+    rpc SetProductOptions(ProductInfoUpdateArrayString) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductCustomFields(ProductInfoUpdateCustomFields) returns (ResultResponse) {
+       
+    } 
+    rpc SetProductVariantPrice(ProductVariantUpdateInt) returns (ResultResponse) {
+       
+    }   
+
+    rpc SetProductVariantDiscountPrice(ProductVariantUpdateInt) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantWholesalePrice(ProductVariantUpdateInt) returns (ResultResponse) {
+      
+    } 
+
+    rpc SetProductVariantWholesaleDiscountPrice(ProductVariantUpdateInt) returns (ResultResponse) {
+
+    } 
+
+    rpc SetProductVariantSortOrder(ProductVariantUpdateArrayString) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantInternalStock(ProductVariantInternalStock) returns (ResultResponse) {
+      
+    } 
+
+    rpc SetProductVariantSaleDate(ProductVariantUpdateInt) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantSaleDateStart(ProductVariantUpdateInt) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantLimitedQty(ProductVariantUpdateBool) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantAllowBackorder(ProductVariantUpdateBool) returns (ResultResponse) {
+       
+    } 
+
+    rpc SetProductVariantQty(ProductVariantUpdateDouble) returns (ResultResponse) {
+       
+    }
+    
+
+    rpc SetProductVariantAvailableInventory(VariantAvailableInventory) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductVariantDiscountQty(ProductVariantQtyDiscount) returns (ResultResponse) {
+      
+    }
+
+    rpc ProductVariantDiscountType(ProductInfoRequest) returns (ResultResponse) {
+      
+    }
+
+    rpc SetQtyDiscountClass(QtyDiscountClass) returns (ResultResponse) {
+      
+    }
+
+    rpc GetQtyDiscountClass(google.protobuf.Empty) returns (ResultResponse) {
+      
+    }
+
+    rpc DeleteQtyDiscountClass(QtyDiscountClass) returns (ResultResponse) {
+      
+    }
+
+    rpc SetProductVariantWeight(ProductVariantUpdateDouble) returns (ResultResponse) {
+      
+    }    
+
+    rpc SetProductVariantDimensions(ProductVariantUpdateDimension) returns (ResultResponse) {
+    
+    }   
+
+    rpc SetProductVariantBarcode(ProductVariantUpdateString) returns (ResultResponse) {
+     
+    }  
+
+    rpc SetProductVariantSku(ProductVariantUpdateString) returns (ResultResponse) {
+    
+    }  
+
+    rpc UploadProductVariantImage(stream ImageUpload) returns (ResultResponse) {
+        // option (google.api.http) = {
+        //     post: "/SetProductVariantImage/{product_id}/{variant_id}",
+        //     body: "*"
+        // };
+    }  
+
+    rpc DeleteProductVariantImage(ProductVariantUpdateString) returns (ResultResponse) {
+  
+    }  
+
+    rpc SetProductVariantOptionValue(ProductVariantUpdateArrayString) returns (ResultResponse) {
+       
+    }
+    rpc DeleteProductVariantBulk(ProductIDByVariantRequest) returns (ResultResponse) {
+       
+    }
+    rpc DeleteProductVariantByOptionValue(ProductVariantOptionDelete) returns (ResultResponse) {
+       
+    }
+    rpc DeleteProductVariantOptions(ProductIDByVariantRequest) returns (ResultResponse) {
+       
+    }
+
+
+    rpc SetProductVariantOptions(ProductInfoRequest) returns (ResultResponse) {
+       
+    }
+
+    rpc SetProductVariantSale(ProductVariantSaleRequest) returns (ResultResponse) {
+        
+    }     
+
+
+    rpc SetProductVariantCustomFields(ProductVariantUpdateCustomFields) returns (ResultResponse) {
+       
+    }  
+
+    rpc SetProductVariantStatus(ProductVariantUpdateBool) returns (ResultResponse) {
+        
+    } 
+
+    rpc SetProductVariantCustomProperties(ProductVariantUpdateCustomProperties) returns (ResultResponse){
+        
+    }
+    rpc SetProductVariantDisableDiscount(ProductVariantUpdateBool) returns (ResultResponse) {
+      
+    } 
+
+    rpc GetProductVariantHistory(InventoryLogRequest) returns (ResultResponse) {
+       
+    }  
+
+    rpc DeleteProductActions(ProductAction) returns (ResultResponse) {
+      
+    }  
+
+    rpc SetProductActions(ProductAction) returns (ResultResponse) {
+       
+    }  
+
+    rpc GetProductActions(google.protobuf.Empty) returns (ResultResponse) {
+       
+    }   
+
+
+    rpc GetProductReviews(ProductReviewsListing) returns (ResultResponse) {
+        
+    }
+
+
+    rpc DeleteProductReviews(ProductReview) returns (ResultResponse) {
+       
+    }
+    
+    rpc WriteProductReviews(ProductReview) returns (ResultResponse) {
+    
+    }
+
+}
+
+message ProductReviewsListing {
+    uint32 total_reviews = 1;
+    string pit = 2;
+    uint32 display_result = 3;
+    repeated ProductReview product_reviews = 4; 
+
+    //ProductReview, Status  = approved 
+
+    //Products.Review States = 6
+
+    //Products.RviewType = 7
+    enum SORTBY{
+        recent =0;
+        oldest =1;
+        highest_rating =2;
+        lowest_rating =3;
+    }
+    SORTBY sort_by = 6;
+}
+
+message ProductReview {
+
+    string review_id = 1;
+
+    string product_id = 2;
+    string review_title = 3;
+    string review_text = 4;
+
+    oneof reviewer {
+        lexmodo.v1.customers.CustomerInfo customer = 5;
+
+        string admin_name = 6;
+    }
+    
+    enum REVIEW_STATUS{
+        unknown = 0 ;
+        pending = 1;
+        approved = 2;
+        deleted = 3;
+        hidden = 4;
+        rejected = 5;
+        
+    }
+
+    REVIEW_STATUS review_status = 7;
+    enum REVIEW_STARS{
+        unknown_star = 0 ;
+        one = 1;
+        two = 2;
+        three = 3;
+        four = 4;
+        five = 5;
+
+    }
+    REVIEW_STARS review_stars = 8;
+
+    uint32 review_created_on = 9;
+
+    string reply_to_review_id = 10;
+
+    enum REVIEW_TYPE{
+        unkown = 0;
+        review = 1;
+        question_answer = 2;
+    }
+
+    REVIEW_TYPE review_type = 11;
+}
+
+
+message ProductAtlTextUpdate {
+    
+    string product_id = 1;
+
+    string variant_id = 2;
+
+    string image_url_hash = 3;
+
+    string alt_text = 4;
+}
+
+message InventoryLogRequest {
+    string product_id = 1;
+
+    string variant_id = 2;
+    
+    google.protobuf.Int32Value changed_on =3;
+
+    uint32 page_num =4;
+
+    google.protobuf.StringValue orders_item_id  = 5;
+}
+message InventoryLogs {
+    uint32 display_result = 1;
+    uint32 total_result = 2;
+    repeated InventoryLog inventory_logs = 3;
+}
+message InventoryLog {
+    string inventory_log =1;
+    double changed_qty =2;
+    double old_qty =3; 
+    double new_qty=4;
+    string changed_by =5; 
+    uint32 changed_on = 6;
+}
+message ProductVariantSaleRequest{
+
+    string product_id = 1;
+
+    string variant_id = 2;
+
+    google.protobuf.Int32Value variant_sale_start =3;
+    
+    google.protobuf.Int32Value variant_sale_end =4;
+
+
+    oneof regular {
+
+        uint32 variant_discount_price = 5;
+
+        double sale_percentage =6;
+
+
+    }
+
+    oneof wholesale {
+
+        uint32 variant_wholesale_discount_price = 7;
+
+        double sale_wholesale_percentage =8;
+
+
+    }
+
+    bool disable_sale =9;
+}
+
+
+
+enum  PRODUCT_CHANNEL{
+
+    ONLINE_STORE = 0;
+    FACEBOOK = 1;
+    GOOGLE = 2;
+    EBAY = 3;
+    INSTAGRAM =4;
+    IN_PERSON = 5;
+}
+
+enum Weight{
+    w_v = 0;
+   lbs = 1;
+   kgs = 2;
+   oz = 3;
+   g = 4;
+  
+}
+
+enum DIM{
+    d_v = 0; 
+    cm = 1;
+    in = 2;
+    m = 3;
+}
+
+message ProductSearchRequest {
+    string search_query = 1;
+    uint32 page_num = 2;
+    repeated string products_searchable_fields = 3;
+    string after_value = 4;
+    ProductRuleRequest product_rules_request =5;
+}
+
+message RuleSortBy {
+
+    string column_name =1;
+    enum SORT{
+        asc =0;
+        desc=1;
+    }
+    SORT sort_order =2;
+}
+
+message ProductRuleRequest{
+    string rule_id = 1;
+    string rule_name = 2;
+    string category_id = 3;
+    string rule_query = 4;
+    repeated RuleSortBy sort_by =5;
+    bool store_view = 6;
+    map<string,string> custom_data = 7;
+    repeated ProductVariant product_variants = 8;
+    repeated string rules_id = 9;
+    uint64 sort_order =10;
+    map<string,uint32> product_sort_order = 11;
+} 
+
+message RuleReplace{
+
+    string products_id = 1;
+    string before_products_id = 2;
+
+}
+
+message ProductEmptyRequest{
+
+}
+
+message ProductRelated{
+    string product_id = 1;
+    repeated string related_product_id = 2;
+}
+
+message ProductVariantInternalStock{
+      string product_id = 1;
+    string variant_id = 2;
+    StockInternalInfo stock_internal_info =3;
+}
+
+message ProductVariantQtyDiscount{
+    string product_id = 1;
+    string variant_id = 2;
+    repeated  QtyDiscount qty_discount =3;
+
+    QtyDiscountClass qty_discount_class =4;
+    
+}
+message QtyDiscountClasses{
+
+    repeated QtyDiscountClass qty_discount_classes =1;
+
+}
+message QtyDiscountClass{
+    string class_id = 1;
+    string class_name = 2;
+    string class_description = 3;
+    repeated  QtyDiscount qty_discount =4;
+    
+}
+
+message ProductVariantUpdateDimension{
+
+    string product_id = 1;
+    string variant_id = 2;
+    double value_length = 16;
+    double value_width = 17;
+    double value_height = 18;
+}
+
+message ProductInfoSeoTitle{
+    string product_id = 1;
+    string value = 2;
+}
+
+message ProductInfoChannels{
+    string product_id = 1;
+    repeated PRODUCT_CHANNEL value = 2;
+}
+
+message ProductInfoTag{
+    string product_id = 1;
+    repeated string value = 2;
+}
+
+
+message ProductReviews{
+    string product_id = 1;
+    uint64 total_reviews =2;
+    double reviews_avg = 3;
+}
+
+
+message ProductInfoUpdateCustomFields{
+    string product_id = 1;
+    map<string,string> value = 2;
+    bool append_data =3; 
+}
+
+message OptionValueObject{
+        map<string,string> value = 1;
+}
+
+message ProductVariantOptionDelete{
+    string product_id = 1;
+    repeated OptionValueObject value = 3;
+}
+
+
+
+message ProductVariantUpdateCustomFields{
+    string product_id = 1;
+    string variant_id = 2;
+    map<string,string> value = 3;
+    bool append_data =4; 
+}
+
+message ProductIDByVariantRequest{
+    repeated ProductVariant product_variant_request = 1;
+}
+
+message ProductVariantUpdateArrayString{
+    string product_id = 1;
+    string variant_id = 2;
+    repeated string value = 3;
+}
+
+
+message ProductVariantUpdateDouble{
+    string product_id = 1;
+    string variant_id = 2;
+    double value = 3;
+    
+}
+
+message ProductVariantUpdateBool{
+    string product_id = 1;
+    string variant_id = 2;
+    bool value = 3;
+}
+
+message ProductVariantUpdateString{
+    string product_id = 1;
+    string variant_id = 2;
+    string value = 3;
+}
+
+message ProductVariantUpdateInt{
+    string product_id = 1;
+    string variant_id = 2;
+    uint32 value = 3;
+}
+
+message ProductVariant{
+    string product_id = 1;
+    string variant_id = 2;
+}
+
+message ProductInfoUpdateInt{
+    string product_id = 1;
+    uint32 value = 2;
+}
+
+message ProductInfoUpdateBool{
+    string product_id = 1;
+    bool value = 2;
+}
+
+message ProductInfoUpdateDouble{
+    string product_id = 1;
+    double value = 2;
+}
+
+
+message ProductInfoUpdateString{
+    string product_id = 1;
+    string value = 2;
+}
+
+message VariantLocationQty {
+    string location_id =1;
+    double variant_qty =2;
+}
+
+message VariantAvailableInventory{
+    repeated VariantLocationQty variant_location_qty = 1;
+    google.protobuf.StringValue product_id =2;
+    google.protobuf.StringValue variant_id =3;
+}
+
+
+message ProductInfoUpdateDIM{
+    string product_id = 1;
+
+    DIM value = 2;
+}
+
+
+message ProductInfoUpdateWeight{
+    string product_id = 1;
+  
+    Weight value = 2;
+}
+
+
+message ProductInfoUpdateArrayString{
+    string product_id = 1;
+    repeated string value = 2;
+}
+
+message ProductVariantUpdateCustomProperties{
+    string product_id =1;
+    string variant_id = 2;
+    repeated CustomProperties value = 3;
+}
+
+
+message ResultResponse{
+
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    ProductInfoRequest product = 5;
+    ProductListing products_listing = 6;
+    repeated ProductRuleRequest rules = 7;
+    repeated SearchableFields product_fields = 8;
+    ProductRuleRequest rule = 9;
+    lexmodo.v1.money.Money Currency =10;
+    InventoryLogs inventory_logs = 11;
+    ProductActions actions = 12;
+    repeated LogstashVariants logstash_variants =13;
+    QtyDiscountClasses qty_discount_classes =14;
+
+    ProductReviewsListing product_reviews =15;
+}
+
+message ProductActions{
+    repeated ProductAction actions =1;
+}
+
+message ProductAction{
+    string action_name =1;
+     enum ACTION{
+        create_update =0;
+        delete =1;
+        update =3;
+        create= 4;
+        
+    }
+
+    ACTION action = 2;
+
+    string action_rule =3;
+
+    uint64 action_expiry = 4;
+
+    string action_function =5;
+
+    oneof action_ {
+
+        ProductVariantUpdateBool product_variant_update_bool = 6;
+
+        ProductVariantSaleRequest product_variant_sale_request = 7;
+        
+        ProductVariantUpdateCustomFields product_variant_update_custom_fields = 8 ;
+
+
+        ProductVariantUpdateArrayString product_variant_update_array_string = 9;
+
+
+        ProductVariantUpdateString product_variant_update_string = 10;
+
+
+        ProductVariantUpdateDimension product_variant_update_dimension =11;
+
+        ProductVariantUpdateDouble product_variant_update_double = 12;
+
+        VariantAvailableInventory variant_available_inventory = 13;
+
+        ProductVariantUpdateInt product_variant_update_int = 14;
+
+
+        ProductVariantInternalStock product_variant_internal_stock = 15;
+
+
+        ProductInfoUpdateCustomFields product_info_update_custom_fields = 16;
+
+
+        ProductInfoUpdateString product_info_update_string = 17;
+
+
+        ProductInfoChannels product_info_channels = 18;
+
+        ProductInfoUpdateDouble product_info_update_double  = 19;
+
+        ProductInfoUpdateDIM product_info_update_dim = 20;
+
+        ProductAtlTextUpdate product_atl_text_update = 21;
+
+        ProductInfoUpdateWeight product_info_update_weight = 22;
+
+        ProductRelated product_related = 23;
+
+        ProductInfoUpdateBool product_info_update_bool = 24;
+
+        ProductInfoTag product_info_tag = 25;
+    }
+
+    string action_id = 26;
+
+
+    uint64 created_at =27;
+
+    bool is_expired = 28;
+
+    repeated string activate_action_on = 29;
+} 
+
+message FieldRange{
+    string min = 1;
+    string max =2;
+}
+
+message SearchableFields{
+
+
+    string field_name = 1;
+
+    repeated string field_values  = 2;
+
+    enum Ptype{
+        empty = 0;
+        string = 1;
+        date = 2;
+        number = 3;
+        bool = 4;
+        interLinked = 5;
+    }
+
+    Ptype field_type = 3;
+
+    FieldRange field_range = 4;
+    uint32 page = 5 ;
+    string linked_field_to_key = 6;
+    repeated uint32 count =7;
+}
+
+message LinkedFields {
+    string field_name_key =1;
+    string field_value_key =2;
+}
+
+message ProductListingInfo{
+
+    string link_id = 1;
+    string link_seo = 2;
+    uint32 display_result = 3;
+    string rule_id = 4;
+    repeated ProductVariant  product_variants =5;
+    string rule_query = 6;
+    repeated RuleSortBy sort_by =7;
+    string pit =8;
+    map<string,string> custom_data = 9;
+
+}
+
+
+message ProductCreateRequest {
+    string product_name = 2;
+    string product_model = 3;
+    string product_description = 4;
+    repeated string product_images = 5;
+    bool product_virtual = 6;
+    bool product_allow_recurring = 7;
+    bool product_status = 8;
+    bool product_taxed = 9;
+    string product_date_added = 10;
+    string product_date_available = 11;
+ 
+    Weight product_weight = 12;
+
+
+    DIM product_dim_type  = 13 ; 
+    double product_order_min = 14 ; 
+    double product_order_max = 15 ; 
+    double product_order_units = 16 ; 
+    string product_seo_title = 17 ;
+    string product_seo_description = 18; 
+    string product_seo_url = 19 ;
+    repeated string product_option = 20; 
+    map<string,string> product_custom_fields = 21;
+    repeated VariantsCreate product_variants = 22;
+    repeated string product_tags =28;
+    string product_type = 29;
+    string product_vendor =30;
+    repeated PRODUCT_CHANNEL product_channels = 31;
+    string product_brand =32;
+
+}
+
+message VariantsArray {
+    string product_id = 1;
+    repeated VariantsCreate product_variants = 2;
+}
+message VariantsCreate {
+    uint32 variant_price = 2;
+    uint32 variant_discount_price = 3;
+    uint32 variant_wholesale_price = 4;
+    uint32 variant_wholesale_discount_price = 5;
+    google.protobuf.Int32Value variant_sale_end = 6;
+    bool variant_limited_qty = 7;
+    double variant_qty  = 8;
+    bool variant_allow_backorder = 9;
+    double variant_weight = 10;
+    string variant_barcode = 11;
+    string variant_sku = 12;
+    string variant_image = 13;
+    repeated string variant_option_value = 14;
+    string product_id = 15;
+    double variant_length = 16;
+    double variant_width = 17;
+    double variant_height = 18;
+    google.protobuf.Int32Value variant_sale_start = 19;
+    map<string,string> variant_custom_fields = 21;
+    bool variant_status = 22;
+    StockInternalInfo stock_internal_info =24;
+
+}
+
+message ProductListing{
+
+    string assoicated_rule_id = 1;
+    uint32 total_result = 2;
+    uint32 display_result = 3;
+    repeated ProductInfoRequest products_listing = 4;
+    string pit =5;
+    string rule_id =6;
+    string link_seo =7; 
+    repeated RuleSortBy sort_by =8;
+    string rule_query = 9;
+    map<string,string> custom_data = 10;
+
+}
+
+message ImageMetaData{
+    string image_url = 1;
+    string alt_text = 2;
+}
+
+message Fields{
+    string key = 1;
+    string value = 2; 
+}
+
+message AppCustomData{
+    string app_name =1;
+    repeated Fields app_fields =2; 
+}
+
+
+message ProductInfoRequest {
+    string product_id = 1;
+    string product_name = 2;
+    string product_model = 3;
+    string product_description = 4;
+    repeated ImageMetaData product_images = 5;
+    bool product_virtual = 6;
+    bool product_allow_recurring = 7;
+    bool product_status = 8;
+    string product_date_added = 9;
+    string product_date_available = 10;
+
+    Weight product_weight = 11 ;
+
+    DIM product_dim_type  = 12; 
+
+    double product_sold_qty  = 13;
+    uint32 product_number_of_reviews = 14; 
+    double product_stars_average = 15; 
+    double product_order_min = 16 ; 
+    double product_order_max = 17 ; 
+    double product_order_units = 18 ; 
+    string product_seo_title = 19 ;
+    string product_seo_description = 20; 
+    string product_seo_url = 21 ;
+    repeated string product_option = 22; 
+    map<string,string> product_custom_fields = 23;
+    repeated Variants product_variants = 24;
+    double product_total_qty  = 25;
+    bool product_on_sale = 26;   
+    repeated ProductRuleRequest product_rules = 27;
+    repeated string product_tags =28;
+    string product_type = 29;
+    string product_vendor =30;
+    uint64 product_date_update = 31;
+    bool product_taxed = 32;
+    repeated PRODUCT_CHANNEL product_channels = 33;
+    string product_brand =34;
+    repeated AppCustomData product_app_customdata  =35;
+
+}
+
+message LogstashVariants {
+    
+    string variants_id = 1;
+    uint32 variants_price = 2;
+    uint32 variants_discount_price = 3;
+    uint32 variants_wholesale_price = 4;
+    uint32 variants_wholesale_discount_price = 5;
+    uint32 variants_sale_end = 6;
+    bool variants_limited_qty = 7;
+    double variants_qty  = 8;
+    bool variants_allow_backorder = 9;
+    double variants_weight = 10;
+    double variants_num_sold  = 11;
+    google.protobuf.StringValue variants_barcode = 12;
+    google.protobuf.StringValue variants_sku = 13;
+    repeated string variants_options = 15;
+    map<string,string> variants_full_object = 22;
+    map<string,string> variants_custom_fields = 23;
+    bool variants_status = 24;
+}
+message CustomProperties{
+    string key =1;
+    repeated string values = 2;
+}
+message Variants {
+    
+    string variant_id = 1;
+    lexmodo.v1.money.Money variant_price = 2;
+    lexmodo.v1.money.Money variant_discount_price = 3;
+    lexmodo.v1.money.Money variant_wholesale_price = 4;
+    lexmodo.v1.money.Money variant_wholesale_discount_price = 5;
+
+    google.protobuf.Int32Value variant_sale_end = 6;
+    bool variant_limited_qty = 7;
+    double variant_qty  = 8;
+    bool variant_allow_backorder = 9;
+    double variant_weight = 10;
+    double variant_sold_qty  = 11;
+    string variant_barcode = 12;
+    string variant_sku = 13;
+    ImageMetaData variant_image = 14;
+    repeated string variant_option_value = 15;
+    double variant_length = 16;
+    double variant_width = 17;
+    double variant_height = 18;
+    google.protobuf.Int32Value variant_sale_start = 19;
+    bool variant_on_sale =20;
+
+    VariantAvailableInventory available_inventory =21;
+
+    map<string,string> variant_custom_fields = 22;
+    bool variant_status = 23;
+    StockInternalInfo stock_internal_info =24;
+    bool disable_discounts = 25;
+    repeated AppCustomData variant_app_customdata  =35;
+    repeated QtyDiscount qty_discount = 36;
+
+    repeated CustomProperties variant_custom_properties = 37;
+}
+
+message QtyDiscount{
+
+    double variant_qty  = 1;
+    lexmodo.v1.money.Money variant_price = 2;
+    lexmodo.v1.money.Money variant_discount_price = 3;
+    lexmodo.v1.money.Money variant_wholesale_price = 4;
+    lexmodo.v1.money.Money variant_wholesale_discount_price = 5;
+    google.protobuf.StringValue custom_rule = 6;   
+    google.protobuf.StringValue group_tag = 7;
+
+    oneof automatic_price {
+
+        lexmodo.v1.money.Money automatic_price_difference = 8;
+
+        double automatic_price_percentage =9;
+
+
+    }
+    
+    oneof automatic_discount {
+
+        lexmodo.v1.money.Money automatic_discount_difference = 11;
+
+        double automatic_discount_percentage = 12;
+
+    }
+
+    google.protobuf.BoolValue retain_custom_rule_on_group_tag_qty = 13;
+}
+
+message StockInternalInfo{
+
+    lexmodo.v1.money.Money cost=1;
+    double reordering_point =2;
+    lexmodo.v1.money.Money msrp = 3;
+    double desired_inventory_level =4;
+    map<string,lexmodo.v1.money.Money> variant_option_value_breakdown = 5;
+
+}
+
+message ImageUpload {
+    
+    bytes file_content = 1;
+
+    string image_name =2;
+
+    string variant_id = 3;
+
+    string product_id = 4;
+
+    string lexmodo_image_url =5;
+
+}

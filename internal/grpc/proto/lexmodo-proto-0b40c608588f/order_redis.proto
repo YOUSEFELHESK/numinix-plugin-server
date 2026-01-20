@@ -1,0 +1,60 @@
+syntax = 'proto3';
+
+package lexmodo.v1.order_redis;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/order_redis";
+
+
+import "google/protobuf/wrappers.proto";
+import "orders.proto";
+
+message OrderChannel{
+
+    uint64 client_id =1;
+
+
+	enum ACTION_TYPE{
+		
+	    unknown = 0;
+	    update = 1;
+		delete =2;
+		new =3;
+		replace =4;
+	}
+
+	ACTION_TYPE action_type =2;
+
+	
+	lexmodo.v1.orders.Invoice invoice =3;
+
+	string message_id =6;
+
+
+	google.protobuf.StringValue migrate_order_uuid = 7;
+}
+
+
+message OrderOPCChannel{
+
+    uint64 client_id =1;
+
+
+	enum ACTION_TYPE{
+		
+	    unknown = 0;
+		delete =1;
+		new =2;
+	}
+
+	ACTION_TYPE action_type =2;
+
+	
+	string invoice_uuid =3;
+
+	string replay_uuid = 4;
+
+	string customer_id = 5;
+
+	string message_id = 6;
+}

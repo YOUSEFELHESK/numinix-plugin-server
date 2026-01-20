@@ -1,0 +1,55 @@
+syntax = 'proto3';
+
+package lexmodo.v1.product_redis;
+
+option go_package = "bitbucket.org/lexmodo/proto/product_redis";
+
+import "product.proto";
+
+
+enum ACTION_TYPE{
+		
+	unknown = 0;
+	update = 1;
+	delete =2;
+	new =3;
+	get=4;
+}
+message ProductWeightChannel{
+	uint64 client_id =1;
+
+	lexmodo.v1.products.ProductVariantUpdateDouble product_weight =2;
+	
+	ACTION_TYPE action_type =3;
+
+	string redis_id =4;
+}
+
+
+message ProductChannel{
+
+    uint64 client_id =1;
+
+    lexmodo.v1.products.VariantAvailableInventory product_stock  = 2;
+
+    ACTION_TYPE action_type =3;
+    
+}
+
+message ProductInfoChannel {
+	uint64 client_id =1;
+	lexmodo.v1.products.ProductInfoRequest product_info =2;
+	string grpc_method =3;
+	ACTION_TYPE action_type =4;
+}
+
+
+
+
+message ProductActionChannel {
+	uint64 client_id =1;
+	repeated lexmodo.v1.products.ProductAction product_action =2;
+	string grpc_method =3;
+	ACTION_TYPE action_type =4;
+	string product_id =5;
+}

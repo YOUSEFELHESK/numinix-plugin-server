@@ -1,0 +1,121 @@
+syntax = 'proto3';
+
+package lexmodo.v1.order.invoice.items;
+
+option go_package = "bitbucket.org/lexmodo/proto/invoice_items";
+
+import "money.proto";
+import "locations.proto";
+import "google/protobuf/wrappers.proto";
+
+
+message FulfillmentLocation{
+
+    lexmodo.v1.locations.Location fulfillment_location =1;
+    double quantity_to_fulfill =2;
+}
+message FulfillmentLocations{
+
+    repeated FulfillmentLocation fulfillment_locations =1;
+
+}
+
+message TrackingInfo{
+
+    string tracking_id =1;
+    
+    uint32 shipped_date =2;
+    
+    string carrier_name =3;
+    
+    double quantity_shipped =4;
+
+    google.protobuf.StringValue fulfilled_from  =5;
+
+    string shipping_method =6;
+
+    string label_id =7;
+
+    string label_url =8;
+
+}
+
+message TrackingInfos{
+    double total_quantity_shipped =1;
+    repeated TrackingInfo tracking_info =2;
+}
+
+
+    enum ORDER_RATE{
+       _ = 0;
+        percentage = 1;
+        fixed_amount = 2;
+    }
+
+
+enum FULFILLED_STATUS{
+
+        none_FULFILLED_status = 0;
+        unfulfilled = 1;
+        fulfilled = 2;
+ }
+
+message OrderLineItemPriceAdjust{
+
+
+    ORDER_RATE order_line_item_rate = 1;
+    
+    uint32 order_line_item_applied_dollar_amount =2;
+    
+    lexmodo.v1.money.BINARY_OPERATOR  binary_operator = 3;
+
+    string order_line_item_applied_decimal_percentage = 4;
+
+}
+
+message BackorderInfo {
+    bool placed_on_backorder = 1;
+    double orders_products_qty_backorder  = 2;
+}
+message InvoiceLineItem{
+
+    string orders_item_id = 1;
+    string orders_products_products_id  = 2;
+    string orders_products_variants_id  = 3;
+    string orders_products_name = 4;
+
+    double orders_products_qty = 5;
+
+    lexmodo.v1.money.Money orders_item_was_price = 6;
+    lexmodo.v1.money.Money orders_item_price = 7;
+    lexmodo.v1.money.Money orders_item_total_price = 8;
+
+
+
+    FULFILLED_STATUS fulfillment_status = 9;
+
+    TrackingInfos tracking_info = 10;
+
+    map<string,string> orders_products_extra_info = 11;
+
+    string orders_item_image = 12;
+
+    OrderLineItemPriceAdjust  orders_item_price_adjust = 13;
+
+    bool item_taxable = 14;
+
+    bool item_shippable = 15;
+
+    lexmodo.v1.money.Money order_item_paid_amount = 16;
+
+    double orders_products_qty_paid = 17;
+
+    google.protobuf.DoubleValue orders_products_qty_deleted = 18;
+
+    FulfillmentLocations fulfillment_Location =19;
+
+    BackorderInfo item_on_backorder = 20;
+}
+
+
+

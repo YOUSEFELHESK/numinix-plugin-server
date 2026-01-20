@@ -1,0 +1,214 @@
+syntax = 'proto3';
+
+package lexmodo.v1.payments;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/payments";
+
+import "google/protobuf/wrappers.proto";
+import "order_modules.proto";
+import "invoice_items.proto";
+import "address.proto";
+
+
+service Payments {
+
+
+	rpc ReAuthorizePayment (PaymentRequest) returns (ResultResponse) {}
+
+	rpc DeleteCreditCard (PaymentRequest) returns (ResultResponse) {}
+	
+	rpc SaveCreditCard (PaymentRequest) returns (ResultResponse) {}
+
+
+	rpc ProcessPayment(PaymentRequest) returns (ResultResponse) {}
+
+
+	rpc CapturePayment(PaymentRequest) returns (ResultResponse) {}
+
+	
+	rpc VoidPayment(PaymentRequest) returns (ResultResponse) {}
+
+	
+	rpc RefundPayment(PaymentRequest)  returns (ResultResponse) {}
+
+
+	rpc SetConfig(PaymentRequest) returns (ResultResponse) {}
+
+
+	rpc GetConfig(PaymentRequest) returns (ResultResponse) {}
+
+
+
+	rpc GetSavedCreditCard(PaymentRequest)	returns (ResultResponse) {}
+
+
+	rpc AcceptedCards(PaymentRequest) returns (ResultResponse) {}
+
+
+	rpc ExpressCheckout(PaymentRequest) returns (ResultResponse) {}
+	
+	rpc DisplayFields(PaymentRequest) returns (ResultResponse) {}
+
+	rpc PaymentLog(PaymentRequest) returns (ResultResponse){}
+}
+
+message CreditCardInfo {
+
+	string card_number = 1;
+	
+	uint32 card_exp_month = 2;
+	
+
+	uint32 card_exp_year = 3;
+	
+	string card_code = 4;
+
+	google.protobuf.StringValue payment_profile_id = 5;
+
+}
+
+enum TransactionType{
+	UNKNOWN_TRANSACTION_TYPE = 0;
+	AUTH = 1;
+	CAPTURE = 2;
+	REFUND = 3;
+	VOID = 4;
+	WAITING =5;
+}
+
+enum FieldType {
+    UNKNOWN_TYPE = 0;
+    TEXT = 1;
+    BOOLEAN = 2;
+    SELECT = 3;
+    REDIRECT = 4;
+    HIDDEN=5;
+	LABEL_ONLY=6;
+}
+
+message SetupFields{
+
+    string field_name = 1;
+    FieldType field_type = 2;
+    bool field_required = 3;
+    google.protobuf.StringValue field_value = 4;
+    bool read_only = 5;
+    string field_label = 6;
+    repeated string field_value_set = 7;
+
+}
+
+
+
+message LineItem {
+
+	string item_id = 1;
+	string name = 2;
+	string description = 3;
+	string quantity = 4;
+	string unit_price = 5;
+}
+
+message PaymentRequest{
+
+	CreditCardInfo credit_card = 1;
+	lexmodo.v1.address.Address bill_to = 2;
+	lexmodo.v1.address.Address ship_to = 3;
+	lexmodo.v1.order.modules.OrderTotal subtotal = 4;
+	lexmodo.v1.order.modules.OrderTotal tax = 5;
+	lexmodo.v1.order.modules.OrderTotal shipping = 6;
+	lexmodo.v1.order.modules.OrderTotal duty = 7;
+	lexmodo.v1.order.modules.OrderTotal total = 8;
+	repeated lexmodo.v1.order.invoice.items.InvoiceLineItem line_items = 9;
+	string order_id = 10;
+	string customer_id = 11;
+
+	TransactionType transaction_type = 12;
+	uint64 client_id = 13;
+	repeated SetupFields input_fields = 14; 
+	lexmodo.v1.order.modules.OrderTotal refund = 15;
+	string customer_email = 16;
+	string customer_ip_address = 17;
+	uint32 provider_id = 18;
+	repeated lexmodo.v1.order.modules.OrderTotal order_modules =19;
+	repeated PaymentResultDetails order_transaction_logs = 20;
+
+	
+}
+
+message PaymentResultDetails{
+	 oneof payment_type{
+        string secure_acceptance_url = 1;
+        string token = 2;
+    }
+	string transaction_code = 3;
+	string authorization_code = 4;
+	string message = 5;
+	string avs_result_code = 6 ;
+	string cvv_result_code = 7; 
+	TransactionType transaction_type = 8;
+	CreditCardInfo credit_card = 9;
+	lexmodo.v1.order.modules.OrderTotal charged =10;	
+	string payment_method = 11;
+	lexmodo.v1.address.Address bill_to = 12;
+	string linked_transaction_code = 13;
+	google.protobuf.BoolValue is_suspicious = 14;
+}
+
+
+message PaymentLogs {
+	repeated PaymentLog payment_log = 1;  
+}
+message PaymentLog{
+
+	uint32 provider_id = 1;
+	string log_message = 2;	
+	uint64 log_time = 3;
+	google.protobuf.BoolValue pay_failed = 4;		
+	TransactionType transaction_type =5;
+	uint64 total_request_time =6;
+}
+
+message ResultResponse{
+
+    bool success = 1;
+    
+    bool failure = 2;
+    
+    string code = 3;
+    
+
+    string message = 4;
+    
+    PaymentResultDetails payment_result_details = 5;
+
+    PaymentRequest payment_request = 6;
+
+    repeated SetupFields setup_fields = 7;
+
+    repeated SetupFields display_fields = 8;
+
+    string provider_name = 9;
+
+    string provider_about = 10;
+
+    string provider_link =11 ;
+
+    string provider_rate = 12;
+
+	string provider_logo = 13;
+
+    repeated CreditCardInfo saved_cards = 14;
+
+    uint32 provider_id = 15;
+
+    repeated string payment_accepted_currencies = 16;
+
+    bool payment_processor_enabled = 17;
+
+	PaymentLogs payment_logs = 18;
+}
+
+
+

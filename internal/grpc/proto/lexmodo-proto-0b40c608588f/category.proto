@@ -1,0 +1,204 @@
+syntax = 'proto3';
+
+package lexmodo.v1.categories;
+
+option go_package = "bitbucket.org/lexmodo/proto/categories";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "product.proto";
+service Categories {
+
+    rpc CategoryExists(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            put: "/category",
+            body: "*"
+        };
+    }
+
+    rpc CategoryListingRule(CategoryListingRuleRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            get: "/category"
+        };
+    }
+    rpc CategorySearch(CategorySearchRequest) returns(ResultResponse){
+        option (google.api.http) = {
+            get: "/category/search/{search_query}"
+        };       
+    }
+
+    rpc GetCategoryRule(lexmodo.v1.products.ProductRuleRequest) returns(ResultResponse){
+         option (google.api.http) = {
+            get: "/category/rule"
+        };       
+    }
+    
+    rpc GetCategoryByID(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            get: "/category/{category_id}"
+        };
+    }    
+
+    rpc UpdateCategory(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            post: "/category/{category_id}",
+            body: "*"
+        };
+    }    
+
+    rpc CreateCategory(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            put: "/category",
+            body: "*"
+        };
+    }
+
+    rpc CreateCategoryRule(lexmodo.v1.products.ProductRuleRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            put: "/category/rule/{category_id}",
+            body: "*"
+        };
+    }
+
+    rpc DeleteCategoryRuleFilter(lexmodo.v1.products.ProductRuleRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            delete: "/category/rule/{rule_id}"
+        };
+    }
+
+    rpc DeleteCategoryRule(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            delete: "/category/rule/{category_id}"
+        };
+    }
+
+    rpc DeleteCategory(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            delete: "/category/{category_id}"
+        };
+    }
+
+
+    rpc CategoryRulesExist(lexmodo.v1.products.ProductRuleRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            post: "/category/rules-exist"
+        };
+    }
+
+    rpc UploadCategoryImage(stream ImageUpload) returns (ResultResponse) {
+
+    }  
+
+    rpc GetCategoryRuleListing(google.protobuf.Empty) returns (ResultResponse){
+
+    }
+
+    rpc DeleteCategoryImage(CategoryInfoRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            delete: "/DeleteCategoryImage/{category_id}"
+        };
+    }  
+
+    rpc GetCategoryLanguage(CategoryLanguageRequest) returns (ResultResponse){
+
+    }
+
+    rpc SetCategoryLanguage(CategoryLanguageRequest) returns (ResultResponse){}
+
+    
+    rpc GetDeletedCategory(google.protobuf.Empty) returns (ResultResponse) {
+        
+    }
+
+}
+
+
+message RuleSortBy {
+
+    string column_name =1;
+    enum SORT{
+        asc =0;
+        desc=1;
+    }
+    SORT sort_order =2;
+}
+
+
+message CategoryListingRuleRequest{
+    string rule_id = 1;
+    string rule_name = 2;
+    string rule_query = 3;
+    repeated RuleSortBy sort_by = 4;
+    string pit = 5;
+    uint64 display_result = 6;
+    bool store_rule = 7;
+} 
+
+
+message CategoryListing{
+
+
+
+    uint32 total_result = 3;
+    uint32 display_result = 4;
+    repeated CategoryInfoRequest categories = 5;
+    string rule_id = 6;
+    string rule_query = 7;
+    string pit =9;
+    repeated string sort_by_id = 10;
+}
+
+
+message CategorySearchRequest {
+    string search_query = 1;
+    uint32 page_num = 2;
+    string after_value = 3;
+}
+
+
+
+
+
+message ResultResponse{
+
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    CategoryInfoRequest category = 5;
+    repeated lexmodo.v1.products.ProductRuleRequest rules = 7;
+    lexmodo.v1.products.ProductRuleRequest rule = 8;
+    CategoryListing category_listing = 9;
+    repeated CategoryListingRuleRequest category_listing_rules =10;
+    repeated CategoryLanguageRequest category_language = 11;
+
+}
+
+message CategoryInfoRequest {
+    string category_id = 1; 
+    string category_name = 4;
+    string category_description = 5;
+    string category_image =6;
+    bool category_status = 7;
+    bool category_hidden = 8;
+    uint64 category_date_created = 9;
+    string category_seo_url = 11;
+    string category_seo_title = 12;
+    string category_seo_description = 13;
+    uint64 category_date_updated = 14;
+}
+message CategoryLanguageRequest{
+    string language_id = 1;
+    CategoryInfoRequest category = 2;
+    string language_name = 3;
+    string category_id = 4; 
+}
+
+message ImageUpload {
+    
+    bytes file_content = 1;
+
+    string image_name =2;
+
+    string category_id = 3;
+}

@@ -1,0 +1,400 @@
+syntax = 'proto3';
+
+package lexmodo.v1.google_merchant;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/google_merchant";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "money.proto";
+import "product.proto";
+import "coupons.proto";
+
+service GoogleMerchant {
+
+    rpc ConnectGoogleMerchantStore(ClientSettingsRequest) returns (ResultResponse) {}
+    rpc ListGoogleMerchantStore(google.protobuf.Empty) returns (ResultResponse) {}
+    rpc SetMerchantID(ClientSettingsRequest) returns (ResultResponse) {}
+    rpc SetProductSettings(SetProductSettingsRequest) returns (ResultResponse) {}
+    rpc GetProductSettings(SetProductSettingsRequest) returns (ResultResponse) {}
+    rpc SendProductToGoogle(lexmodo.v1.products.ProductInfoRequest) returns (ResultResponse) {}
+    rpc GetProductStatus(lexmodo.v1.products.ProductInfoRequest) returns (ResultResponse) {}
+    rpc GetProductLogs(lexmodo.v1.products.ProductInfoRequest) returns (ResultResponse) {}
+
+
+    rpc BulkUpdate(GoogleBulkUpdateRequest) returns (ResultResponse) {}
+    rpc CreateCoupon(CouponRequest) returns (ResultResponse) {}
+    rpc IsCouponOnGoogle(CouponRequest) returns (ResultResponse) {}
+    rpc DeleteCoupon(CouponRequest) returns (ResultResponse) {}
+    rpc GetCouponOnGoogle(CouponRequest) returns (ResultResponse) {}
+}
+
+message ProductEnergyEffiecny {
+    string energy_efficiency_class = 1;
+    string min_energy_efficiency_class = 2;
+    string max_energy_efficiency_class = 3;
+}
+
+enum GOOGLE_CHANNEL{
+    UNKOWN = 0;
+    ONLINE = 1;
+    LOCAL = 2;
+    ONLINE_AND_LOCAL = 3;
+}
+enum GOOGLE_ProductApplicability{
+    UNKOWN_GOOGLE_ProductApplicability = 0;
+    ALL_PRODUCTS = 1;
+    SPECIFIC_PRODUCTS = 2;  
+}
+
+
+message GoogleBulkUpdateRequest{
+    string rule_request = 1;
+    SetProductSettingsRequest product_settings = 2;
+    enum ACTION{
+        update =0;
+        delete =1; //If Delete then need to set the values to empty 
+    }
+    ACTION action = 3;
+}
+
+message GOOGLE_TIME_PERIOD{
+    google.protobuf.StringValue start_date =1;
+    google.protobuf.StringValue end_date =2;
+}
+message CouponRequest{
+    lexmodo.v1.coupons.CouponRequest lex_coupon = 1;
+    google.protobuf.StringValue content_language = 2;
+    google.protobuf.StringValue target_country = 3;
+    GOOGLE_ProductApplicability product_applicability = 4;
+
+    GOOGLE_CHANNEL offer_type = 5;
+    google.protobuf.StringValue long_title  = 6;
+    GOOGLE_CHANNEL redemption_channel = 7;
+    google.protobuf.StringValue brand = 8;
+    google.protobuf.StringValue product_type = 9;
+    google.protobuf.StringValue shipping_service_names = 10;
+    google.protobuf.StringValue store_code = 11;
+    google.protobuf.StringValue store_code_exclusion = 12;
+    google.protobuf.StringValue generic_redemption_code = 13;
+    google.protobuf.StringValue promotion_display_dates = 14;
+    google.protobuf.StringValue minimum_purchase_amount = 15;
+    google.protobuf.Int32Value minimum_purchase_quantity = 16;
+    google.protobuf.Int32Value limit_quantity = 17;
+    google.protobuf.StringValue promotion_url  = 18;
+    lexmodo.v1.money.Money max_discount_amount = 19;
+    GOOGLE_TIME_PERIOD promotion_display_time_period = 20;
+    lexmodo.v1.money.Money money_budget =21;
+    google.protobuf.StringValue free_gift_description = 22;
+}
+
+message AddTax{
+    string country =1;
+
+    oneof apply_to{
+        string region = 2; 
+        string postal_code = 3;
+        uint64 location_id = 4;        
+    }
+    
+    lexmodo.v1.money.Money price =5;
+    bool tax_shipping =6;
+    float rate = 7;
+    bool  tax_ship = 8; 
+
+}
+message AddShipping{
+    string country =1;
+
+    oneof apply_to{
+        string region = 2; 
+        string postal_code = 3;
+        string location_group_name = 4; 
+        uint64 location_id = 5;        
+    }
+    string service = 6;
+    lexmodo.v1.money.Money price =7;
+    uint64 min_handling_time =8;
+    uint64 min_transit_time = 9;
+    uint64 max_transit_time = 10;
+
+
+}
+
+message ProductDetail{
+    string section_name = 1;
+    string attribute_name = 2;
+    string attribute_value = 3;
+}
+
+message ProductShippingInfo{
+    google.protobuf.StringValue product_weight =1;
+    google.protobuf.StringValue product_height =2;
+    google.protobuf.StringValue product_width =3;
+    google.protobuf.StringValue product_length =4;
+}
+message SetProductSettingsRequest{
+    ProductSettingsRequest product_settings =1;
+    string product_id = 2;
+    google.protobuf.StringValue variant_id = 3;
+    
+    GOOGLE_CHANNEL channel = 4;
+
+    google.protobuf.BoolValue disable_item = 5;
+}
+
+message SubscriptionCost{
+    lexmodo.v1.money.Money amount =1;
+    oneof apply_to{
+        string period = 2;
+        uint64 period_length =3;
+    }
+}
+
+message Installment{
+    lexmodo.v1.money.Money amount =1;
+    string credit =2;
+    lexmodo.v1.money.Money  down_payment =3;
+    uint64 months =4;
+}
+
+message ProductUnitPricingMeasure{
+    string unit =1;
+    double value =2; 
+}
+
+
+message ProductUnitPricingBaseMeasure{
+    string unit =1;
+    uint64 value =2; 
+}
+
+message ProductDimension{
+    string unit =1;
+    double value =2; 
+}
+
+enum availability{
+    INSTOCK = 0;
+    OUTSTOCK =1;
+    PRE =2;
+    BACKORDEER=3;
+}
+
+message LoyaltyProgram{
+    lexmodo.v1.money.Money price =1;
+    uint64 loyalty_points =2;
+    string member_price_effective_date =3;
+    string shipping_label =4;
+    string program_label =5;
+    string tier_label =6;
+    lexmodo.v1.money.Money cash_back_for_future_use = 7; 
+}
+
+message Certification{
+    string authority =1;
+    string name =2;
+    string code =3;
+    string value =4;
+}
+
+
+message ProductSettingsRequest {
+    google.protobuf.StringValue content_language = 1;
+    google.protobuf.StringValue target_country = 2;
+    google.protobuf.StringValue condition = 3;
+    google.protobuf.StringValue color = 4;
+    google.protobuf.StringValue gender = 5;
+    google.protobuf.StringValue age_group = 6;
+    google.protobuf.StringValue material = 7;
+    google.protobuf.StringValue pattern = 8;
+
+    repeated google.protobuf.StringValue google_product_type = 9;
+    google.protobuf.StringValue google_product_id = 10;
+
+    google.protobuf.StringValue shipping_label = 11;
+    google.protobuf.StringValue custom_label_0 = 12;
+    google.protobuf.StringValue custom_label_1 = 13;
+    google.protobuf.StringValue custom_label_2 = 14;
+    google.protobuf.StringValue custom_label_3 = 15;
+    google.protobuf.StringValue custom_label_4 = 16;
+
+    repeated google.protobuf.StringValue included_destinations = 17;
+    repeated google.protobuf.StringValue excluded_destinations = 18;
+
+    google.protobuf.StringValue ads_grouping = 19;
+    repeated google.protobuf.StringValue ads_label = 20;
+    google.protobuf.StringValue ads_redirect = 21;
+
+    lexmodo.v1.money.Money cost_of_goods_sold = 22;
+    Installment installment = 23;
+    SubscriptionCost subscription_cost = 24;
+    LoyaltyProgram loyalty_program = 25;
+
+    google.protobuf.BoolValue adult = 26;
+    uint32 multi_pack = 27;
+    google.protobuf.BoolValue is_bundle = 28;
+
+    repeated Certification certification = 29;
+    ProductEnergyEffiecny energy_efficeny = 30;
+
+    google.protobuf.StringValue size_type = 31;
+    google.protobuf.StringValue size_system = 32;
+    google.protobuf.StringValue product_detail = 33;
+
+    google.protobuf.StringValue ships_from_country = 34;
+    repeated AddShipping shipping_details = 35;
+
+    google.protobuf.StringValue external_seller_id = 36;
+    google.protobuf.StringValue tax_category = 37;
+    repeated string promotion_id = 38;
+
+    google.protobuf.StringValue life_style_image_link = 39;
+    repeated string product_highlights = 40;
+    repeated ProductDetail product_details = 41;
+
+    google.protobuf.StringValue expiration_date = 42;
+    google.protobuf.Int32Value availability_date = 43;
+    availability availability_status = 44;
+
+    ProductUnitPricingMeasure unit_pricing_base_measure = 45;
+    ProductUnitPricingBaseMeasure unit_pricing_measure = 46;
+    repeated LoyaltyProgram loyalty_programs = 47;
+
+    lexmodo.v1.money.Money auto_pricing_min_price = 48;
+    google.protobuf.StringValue product_description = 49;
+    google.protobuf.StringValue product_name = 50;
+    google.protobuf.StringValue brand_name = 51;
+
+    google.protobuf.StringValue gtin = 52;
+    google.protobuf.StringValue Mpn = 53;
+    repeated AddTax taxes = 54;
+
+    google.protobuf.StringValue CanonicalLink = 55;
+    google.protobuf.StringValue image_link = 56;
+    repeated string additional_image_links = 57;
+
+    google.protobuf.StringValue size = 58;
+    ProductDimension product_height = 59;
+    ProductDimension product_width = 60;
+    ProductDimension product_length = 61;
+
+    repeated string shopping_ads_excluded_countries = 62;
+    google.protobuf.Int32Value sell_on_google_qty = 63;
+
+    google.protobuf.StringValue display_ads_id = 64;
+    repeated google.protobuf.StringValue display_ads_similar_ids = 65;
+    google.protobuf.StringValue display_ads_title = 66;
+    google.protobuf.StringValue display_ads_link = 67;
+
+    google.protobuf.StringValue pickup_method = 68;
+    google.protobuf.StringValue pickup_sla = 69;
+
+    google.protobuf.BoolValue pause = 70;
+    google.protobuf.StringValue virtual_mode_link = 71;
+
+    ProductStructuredData structured_title = 72;
+    ProductStructuredData structured_description = 73;
+
+    repeated SustainabilityIncentives product_sustainability_incentive = 74;
+    google.protobuf.StringValue disclosure_date = 75;
+}
+
+
+message SustainabilityIncentives{
+    enum TT{
+        TYPE_UNSPECIFIED = 0;
+        EV_TAX_CREDIT = 1;
+        EV_PRICE_DISCOUNT = 3;
+    }
+
+    TT type =1;
+    oneof asking {
+        lexmodo.v1.money.Money amount = 2;
+        double percentage = 3;
+    }
+}
+message ProductStructuredData{
+    string content =1;
+    string digital_source_type =2;
+}
+message ClientSettingsRequest{
+    uint64 merchant_id = 1;
+    string google_authorize_code =2;
+    string state =3;
+}
+
+message ProductsStats{
+    uint64 approved = 1;
+    uint64 disaproved =2; 
+    uint64 pending = 3;
+}
+
+message VariantStatus {
+    string variant_id =1;
+    repeated ProductError errors =2;
+    string google_product_id = 3;
+    uint64 last_update =4;
+}
+
+message ProductError{
+    string attribute_name =1;
+    string code =2;
+    string description = 3;
+    string destination = 4;
+    string detail =5;
+    string documentation = 6;
+    string resolution = 7;
+    string servability = 8;
+    repeated string applicable_countries = 9;
+}
+
+message ProductSettingsStatus{
+    enum setting_status {
+        approved =0;
+        disapproved = 1;
+        pending =2;
+
+    }
+    setting_status current_status = 1;
+    string product_id = 3;
+    VariantStatus variant_status =4;
+  
+    GOOGLE_CHANNEL channel = 5;
+
+    uint64 sent_on = 6;
+    uint64 google_last_check = 7;
+    uint64 google_expire_on = 8;
+}
+
+message ListMerchants{
+    uint64 merchant_id =1;
+    string merchant_name =2;
+}
+
+message Log{
+    string log_message = 1;
+    bool log_is_error =2;
+    uint64 log_date = 3;
+}
+
+
+
+message ResultResponse{
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    ProductSettingsRequest global_settings =5;
+    ProductSettingsRequest item_settings =6;
+    ProductsStats listing_status = 7;
+    string authoirze_url = 8;
+    repeated ListMerchants merchants_store = 9;
+  
+    ProductSettingsStatus product_status =10;
+    repeated Log product_log = 11;    
+    uint64 connected_merchant_id =12;
+    google.protobuf.BoolValue disable_item = 13;
+    CouponRequest coupon_google = 14;
+}

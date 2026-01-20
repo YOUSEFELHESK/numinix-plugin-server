@@ -1,0 +1,139 @@
+syntax = 'proto3';
+
+package lexmodo.v1.plugins;
+
+option go_package = "bitbucket.org/lexmodo/proto/plugins";
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+
+service Plugins {
+
+    rpc UnInstallPlugin(PluginsRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            delete: "/plugins/{pluginsrequest_plugin_module}"
+        };
+    }  
+
+    rpc GetPlugins(PluginsRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            get: "/plugins/{pluginsrequest_plugin_module}"
+        };
+    }        
+
+    rpc GetAllPlugins(PluginsRequest) returns (ResultResponse) {
+        option (google.api.http) = {
+            get: "/plugins"
+        };
+    }
+
+
+    rpc LoginChallenge(PluginsRequest)  returns (ResultResponse){
+        option (google.api.http) = {
+            get: "/plugin/login/challenge",
+            body: "*"
+        }; 
+    }
+
+    rpc ConsentChallenge(PluginsRequest)  returns (ResultResponse){
+        option (google.api.http) = {
+            get: "/plugin/login/challenge",
+            body: "*"
+        }; 
+    }    
+        
+    rpc PinWidgets(PluginsRequest) returns (ResultResponse){
+        option (google.api.http) = {
+            get: "/plugin/widgets",
+            body: "*"
+        }; 
+    }
+
+
+    rpc PinnedWidgets(PluginsRequest) returns (ResultResponse){
+        option (google.api.http) = {
+            get: "/pinned/widgets",
+            body: "*"
+        }; 
+    }
+
+    rpc GenerateSessionToken(PluginsRequest) returns (ResultResponse){
+        option (google.api.http) = {
+            get: "/plugin/login/challenge",
+            body: "*"
+        }; 
+    }    
+}
+
+enum PLUGINTYPE {
+    UNKNOWN_PLUGIN = 0;
+    SHIPPING =1;
+    CUSTOM =2;
+}
+
+
+enum WIDGETS{
+    UNKNOWN_WIDGET = 0;
+    PRODUCTS = 1;
+    ORDERS = 2;
+    CUSTOMERS =3;
+}
+
+
+message PluginOAuth{
+
+    oneof oauth_step{
+        google.protobuf.BoolValue start_oauth = 1;
+        google.protobuf.StringValue login_challenge = 2;
+        google.protobuf.StringValue consent_challenge = 3;
+        google.protobuf.StringValue accept_challenge = 4;
+        google.protobuf.StringValue reject_challenge = 5;    
+    }
+
+    google.protobuf.StringValue redirect_to =6;
+    bytes session_token = 7;
+    repeated string requested_scope = 8;
+}
+ 
+message PluginsRequest{
+  
+    google.protobuf.StringValue plugin_code = 1;
+    PLUGINTYPE pluginsrequest_plugin_type = 2;
+    google.protobuf.BoolValue pluginsrequest_plugin_status = 3;
+    google.protobuf.StringValue plugin_id =4;
+    PluginOAuth plugin_oauth = 5;
+    WIDGETS plugin_widgets =6;
+    google.protobuf.BoolValue plugin_installed = 7;
+    repeated string plugin_ids_widget = 8;
+}
+
+message Plugin{
+    PLUGINTYPE plugin_type = 1;
+    string plugin_name = 2;
+    string plugin_logo = 3;
+    string plugin_code  = 4;
+    bool plugin_installed = 5;
+    string plugin_address = 6;
+    oneof auth_type{
+
+        PluginOAuth plugin_oauth = 7; 
+    }
+
+    bool plugin_require_configuration = 8;
+    string plugin_id = 9;
+    uint32 sort_order =10;
+    string plugin_description= 11;
+    string developed_by = 12;
+    repeated WIDGETS plugin_widgets =13;
+}
+
+message ResultResponse{
+
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    repeated Plugin plugins = 5;
+
+}

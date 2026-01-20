@@ -1,0 +1,360 @@
+syntax = 'proto3';
+
+package lexmodo.v1.accounts;
+
+option go_package = "bitbucket.org/lexmodo/proto/users";
+
+// import "google/api/annotations.proto";
+// import "google/protobuf/wrappers.proto";
+ import "google/protobuf/empty.proto";
+
+
+service Users {
+    rpc ListUsers(UserListing) returns (ResultResponse) {}
+	rpc CreateUser(User) returns (ResultResponse) {}
+    rpc UpdateUser(User) returns (ResultResponse) {}
+	rpc GetUserById(User) returns (ResultResponse) {}
+	rpc DeleteUser(User) returns (ResultResponse) {}
+
+	rpc CreateAdminGroup(Group) returns (ResultResponse) {}
+	rpc DeleteAdminGroup(Group) returns (ResultResponse) {}
+	rpc UpdateAdminGroup(Group) returns (ResultResponse) {}
+    rpc GetAdminGroup(Group) returns (ResultResponse) {}
+    rpc GetAdminGroups(google.protobuf.Empty) returns (ResultResponse) {}
+    rpc GetUserGroups(User) returns (ResultResponse) {}
+	rpc AddUserToGroup(Group) returns (ResultResponse) {}
+	rpc RemoveUserFromGroup(Group) returns (ResultResponse) {}
+
+    rpc InviteUser(StoreInvite) returns (ResultResponse) {}
+    rpc GetInvites(google.protobuf.Empty) returns (ResultResponse) {}
+    rpc AcceptInvite(User) returns (ResultResponse) {}
+    rpc DeleteInvite(User) returns (ResultResponse) {}
+    rpc GetUserStores(User) returns (ResultResponse) {}
+    rpc LinkUserToStore(User) returns (ResultResponse) {}
+    rpc RemoveUserFromStore(User) returns (ResultResponse) {}
+
+    // New Chart-related RPCs
+    rpc SetClientCharts(ChartSettings) returns (ResultResponse) {}
+    rpc GetClientCharts(User) returns (ResultResponse) {}
+    rpc GenerateChartToken(User) returns (ResultResponse) {}  // New RPC for chart token generation
+    rpc GenerateMatomoSyncToken(User) returns (ResultResponse) {}  // New RPC for matomo sync token generation
+}
+
+
+message User{
+    string id = 1;
+    USER_STATE state = 2;
+    string email = 3;
+    string first_name = 4;
+    string last_name = 5;
+    uint64 created_at = 6;
+    uint64 updated_at = 7;
+    string token = 8;
+}
+
+enum USER_STATE {
+    inactive = 0;
+    active = 1;
+}
+
+message UserListing{
+    repeated User users_list = 1;
+    uint32 per_page = 2;
+    uint32 page = 3;
+}
+
+message PermissionNamespace{
+    NAMESPACE namespace = 1;
+    repeated PERMISSIONS permissions = 2;
+}
+message Group{
+    string id = 1;
+    string name = 2;
+    repeated PermissionNamespace permission_namespaces = 3;
+    repeated string plugins = 4;
+    repeated User user = 5;
+}
+
+message GroupListing{
+    repeated Group groups_list = 1;
+    uint32 per_page = 2;
+    uint32 page = 3;
+}
+
+message StoreInvite{
+    string client_id = 1;
+    string email = 2;
+    string token = 3;
+    string group_id = 4;
+    uint32 invited_on = 5;
+}
+
+enum ChartType {
+    UNKNOWN_CHART = 0;
+    AVG_ORDERS_SALES = 1;
+    ONLINE_CONVERSION = 2;
+    ONLINE_SESSIONS = 3;
+    TOTAL_ORDERS = 4;
+    TOTAL_SALES = 5;
+    SALES_ATT_MARKET = 6;
+    SALES_SOCIAL = 7;
+    SESSIONS_SOCIAL = 8;
+    TRAFFIC_SALES = 9;
+    TRAFFIC_SESSIONS = 10;
+    DEVICE_ANALYSIS = 11;
+    DEVICE_MODEL_ANALYSIS = 12;
+    LOCATION_ANALYSIS = 13;
+    REFERRER_ANALYSIS = 14;
+    PAGES_ANALYSIS = 15;
+    TOP_PRODUCTS = 16;
+    CUSTOMER_OVERTIME = 17;
+    CUSTOMER_RETURN = 18;
+    SALES_CHANNEL = 19;
+    COHORT_ANALYSIS = 20;
+}
+
+message ChartSettings {
+    repeated ChartType enabled_charts = 1;
+    uint64 updated_at = 2;
+    string token = 3;
+}
+
+message ResultResponse{
+    bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    User user = 5;
+    UserListing users_listing = 6;
+    Group group = 7;
+    GroupListing groups_listing = 8;
+    repeated PermissionNamespace permissions_list = 9;
+    repeated string client_ids = 10;
+    repeated StoreInvite store_invites = 11;
+    ChartSettings chart_settings = 12;
+}
+
+enum NAMESPACE {
+    UNKNOWN =0;
+    STORES = 1;
+    GLOBALS = 2;
+    ADMIN_GROUPS = 3;
+    CUSTOMERS = 4;
+    PRODUCTS = 5;
+    ORDERS = 6;
+    PAYMENTS = 7;
+    SETTINGS = 8;
+    SHIPPINGS = 9;
+    TEMPLATES = 10;
+    LOCATIONS = 11;
+    PLUGINS = 12;
+    BANNERS = 13;
+    IMAGES = 14;
+    COUNTRIES = 15;
+    TAXES = 16;
+    COUPONS = 17;
+    STORE_CREDITS = 18;
+    CARTS = 19;
+    MENUS = 20;
+    PAGES = 21;
+    APPS = 22;
+    SITEMAPS = 23;
+    BLOGS = 24;
+    ACCOUNTS = 25;
+    CHARTS = 26;
+    GOOGLE = 27;
+}
+
+enum PERMISSIONS {
+
+  UNKNOWN_PERMISSIONS = 0;
+//  STORES_PERMISSIONS
+    ADMIN_GROUP = 101;
+// GLOBALS_PERMISSIONS
+// ADMIN_GROUPS_PERMISSIONS
+    MEMBER = 301;
+// CUSTOMERS_PERMISSIONS
+    CREATE_CUSTOMER = 401;
+    DELETE_CUSTOMER = 402;
+    UPDATE_CUSTOMER = 403;
+    RETRIEVE_CUSTOMER_INFO = 404;
+    CUSTOMER_PASSWORD_RESET = 405;
+// PRODUCTS_PERMISSIONS 
+    SET_PRODUCT_INFO = 501; 
+    SET_PRODUCT_SEO_INFO = 502; 
+    VIEW_PRODUCT_INFO = 503;
+    SET_PRODUCT_TAXED_PRODUCTS = 504;
+    SET_PRODUCT_TAGS_PRODUCTS = 505;
+    SET_PRODUCT_TAGS_APPEND_PRODUCTS = 506;
+    SET_PRODUCT_TAGS_DELETE_PRODUCTS = 507;
+    SET_PRODUCT_NAME_PRODUCTS = 508;
+    SET_PRODUCT_DATE_AVAILABLE_PRODUCTS = 509;
+    SET_PRODUCT_MODEL_PRODUCTS = 510;
+    SET_PRODUCT_DESCRIPTION_PRODUCTS = 511;
+    SET_PRODUCT_IMAGES_ORDER_PRODUCTS = 512;
+    SET_PRODUCT_VIRTUAL_PRODUCTS = 513;
+    SET_PRODUCT_ALLOW_RECURRING_PRODUCTS = 514;
+    SET_RELATED_PRODUCTS_PRODUCTS = 515;
+    SET_PRODUCT_STATUS_PRODUCTS = 516;
+    SET_PRODUCT_WEIGHT_PRODUCTS = 517;
+    SET_PRODUCT_IMAGE_ALT_TEXT_PRODUCTS = 518;
+    SET_PRODUCT_DIM_PRODUCTS = 519;
+    SET_PRODUCT_REVIEWS_PRODUCTS = 520;
+    SET_PRODUCT_ORDER_MIN_PRODUCTS = 521;
+    SET_PRODUCT_ORDER_MAX_PRODUCTS = 522;
+    SET_PRODUCT_ORDER_UNITS_PRODUCTS = 523;
+    SET_PRODUCT_SEO_TITLE_PRODUCTS = 524;
+    SET_PRODUCT_SEO_URL_PRODUCTS = 525;
+    SET_PRODUCT_BRAND_PRODUCTS = 526;
+    SET_PRODUCT_VENDOR_PRODUCTS = 527;
+    SET_PRODUCT_CHANNELS_PRODUCTS = 528;
+    SET_PRODUCT_TYPE_PRODUCTS = 529;
+    SET_PRODUCT_SEO_DESCRIPTION_PRODUCTS = 530;
+    SET_PRODUCT_OPTIONS_PRODUCTS = 531;
+    SET_PRODUCT_CUSTOM_FIELDS_PRODUCTS = 532;
+    SET_PRODUCT_VARIANT_PRICE_PRODUCTS = 533;
+    // SET_PRODUCT_VARIANT_DISCOUNT_PRICE_PRODUCTS = 534;
+    SET_PRODUCT_VARIANT_WHOLESALE_PRICE_PRODUCTS = 535;
+    // SET_PRODUCT_VARIANT_WHOLESALE_DISCOUNT_PRICE_PRODUCTS = 536;
+    SET_PRODUCT_VARIANT_SORT_ORDER_PRODUCTS = 537;
+    SET_PRODUCT_VARIANT_INTERNAL_STOCK_PRODUCTS = 538;
+    // SET_PRODUCT_VARIANT_SALE_DATE_PRODUCTS = 539;
+    // SET_PRODUCT_VARIANT_SALE_DATE_START_PRODUCTS = 540;
+    SET_PRODUCT_VARIANT_LIMITED_QTY_PRODUCTS = 541;
+    SET_PRODUCT_VARIANT_ALLOW_BACKORDER_PRODUCTS = 542;
+    SET_PRODUCT_VARIANT_QTY_PRODUCTS = 543;
+    SET_PRODUCT_VARIANT_AVAILABLE_INVENTORY_PRODUCTS = 544;
+    SET_PRODUCT_VARIANT_DISCOUNT_QTY_PRODUCTS = 545;
+    SET_PRODUCT_VARIANT_RESTOCK_QTY_PRODUCTS = 546;
+    SET_PRODUCT_VARIANT_WEIGHT_PRODUCTS = 547;
+    SET_PRODUCT_VARIANT_DIMENSIONS_PRODUCTS = 548;
+    SET_PRODUCT_VARIANT_BARCODE_PRODUCTS = 549;
+    SET_PRODUCT_VARIANT_SKU_PRODUCTS = 550;
+    // SET_PRODUCT_VARIANT_OPTION_VALUE_PRODUCTS = 551;
+    // SET_PRODUCT_VARIANT_OPTIONS_PRODUCTS = 552;
+    SET_PRODUCT_VARIANT_SALE_PRODUCTS = 553;
+    SET_PRODUCT_VARIANT_CUSTOM_FIELDS_PRODUCTS = 554;
+    SET_PRODUCT_VARIANT_STATUS_PRODUCTS = 555;
+    SET_PRODUCT_VARIANT_CUSTOM_PROPERTIES_PRODUCTS = 556;
+    SET_PRODUCT_VARIANT_DISABLE_DISCOUNT_PRODUCTS = 557;
+    SET_PRODUCT_ACTIONS_PRODUCTS = 558;
+   
+
+    CREATE_PRODUCT = 559;
+    DELETE_PRODUCT  = 560;
+    SET_PRODUCT_VARIANT_IMAGE_PRODUCTS = 561;
+    
+// ORDERS_PERMISSIONS
+    CREATE_ORDERS = 601;
+    MANAGE_ORDERS = 602;
+    VIEW_INVOICE = 603;
+    DELETE_PAID_ORDERS = 604; // checked
+    PROCESS_FREE_ORDERS = 605; //checked
+    ADD_DISCOUNT_CODE_MODULE_ORDERS = 606;
+    ADD_STORE_CREDIT_MODULE_ORDERS = 607;
+    REMOVE_ORDER_MODULE_ORDERS = 608;
+    ADD_CUSTOM_ORDER_MODULE_ORDERS = 609;
+    DELETE_LINE_ITEMS_PAID_ORDERS = 610;
+    ADD_CUSTOM_LINE_ITEM_PAID_ORDERS = 611;
+    ADD_CUSTOM_LINE_NONE_PAID_ORDERS = 612;
+    ADD_SHIPPING_COST_PAID_ORDERS = 613;
+    CANCEL_PAID_ORDERS = 614; 
+    CANCEL_RECURRING_ORDERS = 615;
+    DELETE_ORDERS = 616;
+    DELETE_RECURRING_ORDERS = 617;
+    ADD_TAGS_PAID_ORDERS = 618;
+    ADD_TAGS_NONE_PAID_ORDERS = 619;
+    REMOVE_TAXES_ORDERS = 620;
+    OVERRIDE_LINE_ITEMS_PRICE_ORDERS = 621;
+    MANAGE_ORDER_SCRIPTS = 622;
+    REFUND_ORDERS  = 623;
+    PROCESS_ORDER_FREE_SHIPPING = 624; 
+    PROCESS_ORDER_DEFAULT_SHIPPING = 625;
+
+// PAYMENTS_PERMISSIONS
+    SET_CONFIG = 701;
+    PAYMENT_TRANSACTIONS = 702;
+    GET_CONFIG = 703;
+    UPDATE_CUSTOMER_PROFILE = 704;
+    GET_PAYMENT_METHODS = 705;
+    GET_CUSTOMER_PROFILE = 706;
+    PAY_ORDER_SAVED_CARD =  707;
+    REFUND_PAYMENT = 708;
+    SAVE_CUSTOMER_SAVED_CARD = 709; 
+    DELETE_CUSTOMER_SAVED_CARD = 710;
+    VOID_PAYMENTS = 711;
+    CAPTURE_PAYMENTS = 712;
+    PROCESS_PAYMENTS = 713;
+    
+
+// SETTINGS_PERMISSIONS
+    SET_STORE_SETTINGS = 801;
+    SET_STORE_PAGES = 802;
+    GET_STORE_SETTINGS = 803;
+// SHIPPINGS_PERMISSIONS {
+    SET_SHIPPING_SETTINGS = 901;
+    CREATE_LABEL = 902;
+    GET_SHIPPING_SETTINGS = 903;
+    GET_SHIPPING_QUOTES = 904;
+    ADD_CUSTOM_SHIPPING_QUOTES = 905;
+    ADD_DEFAULT_SHIPPING =  906;
+
+
+// TEMPLATES_PERMISSIONS {
+    MANAGE_TEMPLATE = 1001;
+// LOCATIONS_PERMISSIONS
+    MANAGE_LOCATIONS = 1101;
+// PLUGINS_PERMISSIONS
+    MANAGE_PLUGINS = 1201;
+    VIEW_PLUGINS = 1202;
+// BANNERS_PERMISSIONS
+    MANAGE_BANNERS = 1301;
+    GET_BANNER = 1302;
+// IMAGES_PERMISSIONS
+    MANAGE_IMAGES = 1401;
+// COUNTRIES_PERMISSIONS
+// TAXES_PERMISSIONS
+    MANAGE_TAXES = 1601;
+// COUPONS_PERMISSIONS
+    MANAGE_COUPONS = 1701;
+    CREATE_COUPONS = 1702;
+    DELETE_COUPONS = 1703;
+    VIEW_COUPONS = 1704;
+
+// STORE_CREDITS_PERMISSIONS
+    MANAGE_STORE_CREDITS = 1801;
+    GET_CUSTOMER_LEDGER = 1802;
+    MANAGE_CUSTOMER_LEDGER = 1803;
+    REDEEM_GIFT_CODE = 1804;
+    APPROVE_CUSTOMER_LEDGER = 1805;
+    DENY_CUSTOMER_LEDGER = 1806; 
+ ISSUE_STORE_CREDIT = 1807;
+
+    // CARTS_PERMISSIONS
+    MANAGE_CARTS = 1901;
+    CALCULATE_PRICE_NO_CART = 1902;
+// MENUS_PERMISSIONS
+    MANAGE_MENU_ADMIN = 2001;
+    GET_MENUS = 2002;
+// PAGES_PERMISSIONS
+    MANAGE_PAGES_ADMIN = 2101;
+    GET_PAGES = 2102;
+// // APPS_PERMISSIONSUNKNOWN = 0;
+// SITEMAPS_PERMISSIONS
+    MANAGE_SITEMAP = 2301;
+// BLOGS_PERMISSIONS
+    MANAGE_BLOGS = 2401;
+    GET_BLOGS = 2402;
+    ADD_COMMENT = 2403;
+// ACCOUNTS_PERMISSIONS
+    MANAGE_GROUPS = 2501;
+    MANAGE_GROUP_PERMISSIONS = 2502;
+
+    // Chart-related permissions (continuing from the last permission number)
+    MANAGE_CHARTS = 2601;
+    VIEW_CHARTS = 2602;
+
+
+    SET_CONNECT_GOOGLE_MERCHANT = 2700;
+    MANAGE_GOOGLE_MERCHANT = 2701;
+}

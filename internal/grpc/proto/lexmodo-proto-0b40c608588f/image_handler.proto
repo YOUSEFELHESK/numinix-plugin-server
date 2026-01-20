@@ -1,0 +1,65 @@
+syntax = 'proto3';
+
+package lexmodo.v1.image_handler;
+
+option go_package = "bitbucket.org/lexmodo/proto/image_handler";
+
+
+
+service ImageHandler{
+
+    rpc ListImage(ImageListing) returns (ResultResponse) {}
+
+    rpc DeleteImage(Image) returns (ResultResponse)  {}
+    rpc FetchImage(Image) returns (stream ResultResponse)  {}
+    rpc UploadImage(stream Image) returns (ResultResponse){} 
+}
+
+message ResultResponse{
+
+	bool success = 1;
+    bool failure = 2;
+    string code = 3;
+    string message = 4;
+    ImageListing images = 5;
+    Image image = 6;
+}
+
+enum SORTBY{
+    ASC_NAME = 0;
+    DESC_NAME = 1;
+    ASC_CREATED = 2;
+    DESC_CREATED = 3;
+    ASC_HEIGHT = 4;
+    DESC_HEIGHT  = 5;
+    ASC_WIDTH = 6;
+    DESC_WIDTH = 7;
+    ASC_SIZE = 8;
+    DESC_SIZE = 9;
+
+}
+message ImageListing {
+
+    uint32 page_num = 1;
+    uint32 total_result = 2;
+    uint32 display_result = 3;
+
+    string search_by_image_name = 4;
+
+    repeated Image images = 5;
+
+    SORTBY sort_by = 6;
+}
+
+message Image {
+    
+    bytes file_content = 1;
+
+    string image_name = 2;
+    
+    string image_id = 3;
+
+    string image_link = 4;
+
+    uint32 image_size = 5;
+}

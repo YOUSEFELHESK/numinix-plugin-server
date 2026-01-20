@@ -1,0 +1,36 @@
+syntax = 'proto3';
+
+package lexmodo.v1.grpc_log;
+
+
+option go_package = "bitbucket.org/lexmodo/proto/grpc_log";
+import "google/protobuf/wrappers.proto";
+
+
+
+
+
+message GrpcLog{
+
+    uint64 client_id =1;
+	
+    string service  = 2;
+    
+    string method = 3;
+
+    uint64 request_start_time = 4;
+
+	uint64 request_total_time = 5;
+    
+    google.protobuf.StringValue request_error_message = 6;
+
+    string x_request_id = 7;
+
+    string x_user_tracking_id = 8;
+
+    string request_message  = 9;
+
+    string response_message = 10;
+
+    string request_source = 11;
+}

@@ -1,0 +1,81 @@
+Demo:
+	Talk AbOUT how the system is a microservice and connects thorugh channels is decoupled 
+
+	Discounts:
+		sHOPIFY DOESN'T ALLOW MULTIPLE OF DISCOUNTS
+
+
+		System is really complicated now 
+			Point to address validation 
+			21 Microservice  avarage 10 api 210 
+Address not found
+Order:
+	* If I try to access a page with Invliad UUID like http://localhost:8001/orders/draft/sdsdsdsd it doesn't throw an error
+	* Draft order if I create a new order and just add shipping then the order total isn't show correctly
+
+	*Process payment button only aviable if I add the month as 02 and not 2
+
+Ledger:
+
+	* Ledger transactions Can't be delete from  http://localhost:8001/credits/ledger
+	* Ledger Get customer not available 
+
+`
+
+Payment Provider:
+	* Not showing if Authorize is configured or not
+
+
+Fulfilment:
+	Showing Empty  => Image
+
+
+Shipping:
+	EAST POST FEDEX INFO
+	cc["account_number"] = "319538771"
+	cc["meter_number"] = "105892069"
+	cc["key"] = "6W02EnQC0n9nO5NH"
+	cc["password"] = "tmZlwVIuLUHGNtasKOHQYkKKd"
+
+
+SDGHbLa Milano Cognac
+luGgFMezlan "Eugene"
+
+
+teaewasda
+
+ORDER CREDIT 
+	"4485520631171991"
+
+Taxes Show :
+Talk about how 52 states needed to be programmed manually 
+destinc hybrid mix 
+D150 shows canadian
+D151 Shows 00501  State , county Speicla Rate HOLTSVILLE
+D152 12180  State and county tax
+D153  Colarod
+D154
+
+		New YoRK  => Destinab based  
+			ALL Rates 00501 HOLTSVILLE
+
+			New Yourk Some rates            906 Washington Rd.
+												Troy, NY 12180
+				 ZipCode 12180 NEW YORK
+
+
+		Colorado	Destination/Origin Based	If the Store has a physical Address in State then User needs to select either Origin/Destation base taxes. If no store is present then Charge destination tax. 
+
+			(303) 956-7095
+	3154  Sampson Street
+	Aurora, Colorado(CO), 80014 => Location Addess 
+
+
+		Texas	Origin Based	If the store has a Physical Address in the state, then it depends on the store location. Else, the taxes are calculated based on destination
+
+2500 Holmes Ln
+Bellville, Texas(TX), 77418
+
+
+
+Shipping EP: FEDEX
