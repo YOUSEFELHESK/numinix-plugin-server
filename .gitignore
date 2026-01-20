@@ -15,3 +15,5 @@
 
 # Env
 .env
+internal/grpc/proto/
+
